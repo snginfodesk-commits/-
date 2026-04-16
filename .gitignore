@@ -5,3 +5,5 @@ __pycache__/
 venv/
 .venv/
 *.csv
+# Keep fb_ads_report.html tracked for easy viewing
+!fb_ads_report.html
