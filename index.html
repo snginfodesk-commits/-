@@ -3,133 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דוח אופטימיזציה - פרסומות פייסבוק</title>
+<title>דשבורד קמפיינים - פייסבוק</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#e6e6e6;padding:20px;min-height:100vh;line-height:1.6}
-h1{font-size:26px;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{text-align:center;color:#9ca3af;margin-bottom:28px;font-size:14px}
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px}
+h1{font-size:24px;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{text-align:center;color:#9ca3af;margin-bottom:28px;font-size:13px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:30px}
 .kpi{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 12px;text-align:center;transition:transform .2s}
 .kpi:hover{transform:translateY(-3px)}
 .kpi .label{color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px}
 .kpi .value{font-size:24px;font-weight:800;margin-top:4px;background:linear-gradient(135deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-h2{font-size:18px;margin:28px 0 14px;color:#636EFA;border-bottom:2px solid rgba(99,110,250,0.3);padding-bottom:6px}
-.table-wrap{overflow-x:auto;border-radius:12px;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
-table{width:100%;border-collapse:collapse;background:rgba(26,28,35,0.95);font-size:12px;white-space:nowrap}
-th{background:linear-gradient(135deg,#1e1e2e,#2d2f36);padding:10px 14px;text-align:right;font-weight:700;color:#a5b4fc;border-bottom:2px solid #636EFA;position:sticky;top:0}
-td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.06);text-align:right}
+h2{font-size:17px;margin:24px 0 12px;color:#636EFA;border-bottom:2px solid rgba(99,110,250,0.3);padding-bottom:6px}
+.table-wrap{overflow-x:auto;border-radius:12px;margin-bottom:18px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+table{width:100%;border-collapse:collapse;background:rgba(26,28,35,0.95);font-size:13px;white-space:nowrap}
+th{background:linear-gradient(135deg,#1e1e2e,#2d2f36);padding:11px 16px;text-align:right;font-weight:700;color:#a5b4fc;border-bottom:2px solid #636EFA;position:sticky;top:0}
+td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.06);text-align:right}
 tr:hover td{background:rgba(99,110,250,0.08)}
 tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-healthy{background:rgba(0,204,150,0.15);color:#00CC96;border:1px solid rgba(0,204,150,0.3)}
 .badge-fatigue{background:rgba(239,85,59,0.15);color:#EF553B;border:1px solid rgba(239,85,59,0.3)}
 .badge-bounce{background:rgba(255,193,7,0.15);color:#FFC107;border:1px solid rgba(255,193,7,0.3)}
-.badge-mismatch{background:rgba(255,152,0,0.15);color:#FF9800;border:1px solid rgba(255,152,0,0.3)}
 .badge-scale{background:rgba(0,204,150,0.25);color:#00ffba;border:1px solid rgba(0,255,186,0.4)}
+.good{color:#00CC96;font-weight:700}
+.bad{color:#EF553B;font-weight:700}
+.mid{color:#FFC107;font-weight:700}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:900px){.two-col{grid-template-columns:1fr}}
-.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px;margin-bottom:16px}
-.card h3{font-size:15px;margin-bottom:10px;color:#e6e6e6}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding:14px;background:rgba(255,255,255,0.04);border-radius:10px}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px}
-.trend-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#636EFA,#00CC96);display:inline-block;vertical-align:middle}
-.highlight{color:#00CC96;font-weight:700}
-.warn{color:#EF553B;font-weight:700}
-.section-icon{margin-left:6px}
-.spend-bar{height:6px;border-radius:3px;background:linear-gradient(90deg,#636EFA,#a78bfa);display:block;margin-top:4px}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px;margin-bottom:14px}
+.card h3{font-size:15px;margin-bottom:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;font-size:12px}
+.legend-item{display:flex;align-items:center;gap:6px}
+.bar{height:8px;border-radius:4px;display:inline-block;vertical-align:middle}
+.bar-spend{background:linear-gradient(90deg,#636EFA,#a78bfa)}
+.bar-cpl{background:linear-gradient(90deg,#00CC96,#00ffba)}
+.action-box{background:rgba(239,85,59,0.08);border:1px solid rgba(239,85,59,0.2);border-radius:10px;padding:14px;margin:8px 0;font-size:13px}
+.action-box.good-box{background:rgba(0,204,150,0.08);border-color:rgba(0,204,150,0.2)}
 </style>
 </head>
 <body>
 
-<h1>דוח אופטימיזציה לפרסומות פייסבוק</h1>
-<p class="subtitle">7 ימים אחרונים · פירוט: קבוצת מודעות · יעד עלות לליד: $50 · נתוני דמו</p>
+<h1>דשבורד ביצועי קמפיינים</h1>
+<p class="subtitle">7 ימים אחרונים · יעד עלות לליד: $50</p>
 
 <div class="kpi-row">
-<div class="kpi"><div class="label">סה"כ הוצאה</div><div class="value">$10,724</div></div>
-<div class="kpi"><div class="label">חשיפות</div><div class="value">803,126</div></div>
-<div class="kpi"><div class="label">קליקים</div><div class="value">10,510</div></div>
+<div class="kpi"><div class="label">הוצאה</div><div class="value">$10,724</div></div>
 <div class="kpi"><div class="label">לידים</div><div class="value">431</div></div>
-<div class="kpi"><div class="label">עלות ממוצעת לליד</div><div class="value">$24.88</div></div>
+<div class="kpi"><div class="label">עלות לליד</div><div class="value">$24.88</div></div>
+<div class="kpi"><div class="label">אחוז המרה</div><div class="value">4.1%</div></div>
 </div>
 
-<h2>טבלת ניתוח חכם</h2>
+<h2>ביצועי קמפיינים</h2>
 <div class="table-wrap">
 <table>
-<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>חשיפות</th><th>CTR</th><th>CPM</th><th>תדירות</th><th>קליקים</th><th>צפיות דף</th><th>לידים</th><th>עלות לליד</th><th>המרה</th><th>צפייה בדף</th><th>סטטוס</th></tr>
-<tr><td>Brand Awareness - US</td><td>18-34 Males</td><td>$522</td><td>44,526</td><td>0.67%</td><td>$11.73</td><td>1.94</td><td>299</td><td>210</td><td>0</td><td>-</td><td>0.00%</td><td>70.2%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Brand Awareness - US</td><td>35-54 Females</td><td>$626</td><td>54,832</td><td>0.83%</td><td>$11.41</td><td>2.40</td><td>457</td><td>265</td><td>1</td><td class="warn">$625.78</td><td>0.38%</td><td>58.0%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
-<tr><td>Brand Awareness - US</td><td>Broad US</td><td>$649</td><td>55,380</td><td>0.68%</td><td>$11.72</td><td>1.97</td><td>375</td><td>243</td><td>0</td><td>-</td><td>0.00%</td><td>64.8%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Broad - Interest Tech</td><td>SaaS Buyers</td><td>$725</td><td>83,843</td><td>0.59%</td><td>$8.65</td><td>1.96</td><td>494</td><td>325</td><td>3</td><td class="warn">$241.77</td><td>0.92%</td><td>65.8%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Broad - Interest Tech</td><td>Startup Founders</td><td>$731</td><td>79,834</td><td>0.73%</td><td>$9.15</td><td>2.33</td><td>581</td><td>362</td><td>5</td><td class="warn">$146.15</td><td>1.38%</td><td>62.3%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Broad - Interest Tech</td><td>Tech Enthusiasts</td><td>$400</td><td>46,613</td><td>0.55%</td><td>$8.57</td><td>2.01</td><td>256</td><td>185</td><td>1</td><td class="warn">$399.70</td><td>0.54%</td><td>72.3%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>46,023</td><td>1.82%</td><td>$14.92</td><td>1.30</td><td>836</td><td>468</td><td>44</td><td class="highlight">$15.60</td><td>9.40%</td><td>56.0%</td><td><span class="badge badge-scale">🟢 מוכן לסקיילינג</span></td></tr>
-<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>37,695</td><td>1.97%</td><td>$15.65</td><td>2.16</td><td>741</td><td>413</td><td>39</td><td class="highlight">$15.12</td><td>9.44%</td><td>55.7%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
-<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td>53,562</td><td>2.17%</td><td>$13.40</td><td>1.84</td><td>1,160</td><td>802</td><td>83</td><td class="highlight">$8.65</td><td>10.35%</td><td>69.1%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Interest - Marketing</td><td>$519</td><td>31,261</td><td>1.66%</td><td>$16.61</td><td>2.46</td><td>520</td><td>312</td><td>20</td><td>$25.96</td><td>6.41%</td><td>60.0%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>40,036</td><td>2.13%</td><td>$13.70</td><td>2.26</td><td>851</td><td>502</td><td>38</td><td class="highlight">$14.43</td><td>7.57%</td><td>59.0%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Lookalike 3%</td><td>$501</td><td>27,948</td><td>1.42%</td><td>$17.92</td><td>2.53</td><td>396</td><td>212</td><td>12</td><td>$41.74</td><td>5.66%</td><td>53.5%</td><td><span class="badge badge-fatigue">🔴 עייפות קריאטיב</span></td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 1% - CA</td><td>$597</td><td>38,941</td><td>1.24%</td><td>$15.32</td><td>2.48</td><td>482</td><td>306</td><td>16</td><td>$37.29</td><td>5.23%</td><td>63.5%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 1% - US</td><td>$713</td><td>55,075</td><td>1.39%</td><td>$12.94</td><td>1.98</td><td>767</td><td>553</td><td>31</td><td>$23.00</td><td>5.61%</td><td>72.1%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 2% - US</td><td>$544</td><td>44,531</td><td>1.56%</td><td>$12.22</td><td>2.08</td><td>696</td><td>511</td><td>28</td><td class="highlight">$19.44</td><td>5.48%</td><td>73.4%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Retargeting</td><td>30-day visitors</td><td>$473</td><td>18,313</td><td>2.50%</td><td>$25.84</td><td>2.66</td><td>458</td><td>250</td><td>23</td><td>$20.58</td><td>9.20%</td><td>54.6%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
-<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td>23,660</td><td>2.73%</td><td>$27.85</td><td>1.94</td><td>645</td><td>506</td><td>61</td><td class="highlight">$10.80</td><td>12.06%</td><td>78.5%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Retargeting</td><td>Email list</td><td>$522</td><td>21,053</td><td>2.36%</td><td>$24.80</td><td>1.88</td><td>496</td><td>241</td><td>26</td><td>$20.08</td><td>10.79%</td><td>48.6%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+<tr><th>קמפיין</th><th>קבוצה</th><th>הוצאה</th><th>לידים</th><th>עלות לליד</th><th>תדירות</th><th>המרה</th><th>מה לעשות</th></tr>
+<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td class="good">83</td><td class="good">$8.65</td><td>1.84</td><td class="good">10.35%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
+<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td class="good">61</td><td class="good">$10.80</td><td>1.94</td><td class="good">12.06%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>38</td><td class="good">$14.43</td><td>2.26</td><td>7.57%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>39</td><td class="good">$15.12</td><td>2.16</td><td>9.44%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 55%</span></td></tr>
+<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>44</td><td class="good">$15.60</td><td class="good">1.30</td><td>9.40%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
+<tr><td>Lookalike</td><td>LAL 2% - US</td><td>$544</td><td>28</td><td class="good">$19.44</td><td>2.08</td><td>5.48%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Retargeting</td><td>Email list</td><td>$522</td><td>26</td><td>$20.08</td><td>1.88</td><td>10.79%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 48%</span></td></tr>
+<tr><td>Retargeting</td><td>30-day visitors</td><td>$473</td><td>23</td><td>$20.58</td><td class="bad">2.66</td><td>9.20%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 54%</span></td></tr>
+<tr><td>Lookalike</td><td>LAL 1% - US</td><td>$713</td><td>31</td><td>$23.00</td><td>1.98</td><td>5.61%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Interest Marketing</td><td>$519</td><td>20</td><td>$25.96</td><td class="mid">2.46</td><td>6.41%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lookalike</td><td>LAL 1% - CA</td><td>$597</td><td>16</td><td class="mid">$37.29</td><td class="mid">2.48</td><td>5.23%</td><td><span class="badge badge-bounce">⚠ קרוב ליעד</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Lookalike 3%</td><td>$501</td><td>12</td><td class="mid">$41.74</td><td class="bad">2.53</td><td>5.66%</td><td><span class="badge badge-fatigue">🔴 עייפות + נטישה</span></td></tr>
+<tr style="opacity:0.5"><td>Broad - Tech</td><td>Startup Founders</td><td>$731</td><td class="bad">5</td><td class="bad">$146.15</td><td>2.33</td><td>1.38%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
+<tr style="opacity:0.5"><td>Broad - Tech</td><td>SaaS Buyers</td><td>$725</td><td class="bad">3</td><td class="bad">$241.77</td><td>1.96</td><td>0.92%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
+<tr style="opacity:0.5"><td>Broad - Tech</td><td>Tech Enthusiasts</td><td>$400</td><td class="bad">1</td><td class="bad">$399.70</td><td>2.01</td><td>0.54%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
+<tr style="opacity:0.5"><td>Brand Awareness</td><td>35-54 Females</td><td>$626</td><td class="bad">1</td><td class="bad">$625.78</td><td>2.40</td><td>0.38%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
 </table>
 </div>
 
 <div class="legend">
-<div class="legend-item"><span class="badge badge-fatigue">🔴</span> עייפות קריאטיב - תדירות > 2.5 ו-CTR נמוך</div>
-<div class="legend-item"><span class="badge badge-bounce">🟡</span> בעיית טעינה - צפייה בדף < 60%</div>
-<div class="legend-item"><span class="badge badge-mismatch">🟠</span> חוסר התאמה - CTR גבוה אבל המרה נמוכה</div>
-<div class="legend-item"><span class="badge badge-scale">🟢</span> מוכן לסקיילינג - CPL נמוך ותדירות נמוכה</div>
+<div class="legend-item"><span class="badge badge-scale">⬆</span> להגדיל תקציב</div>
 <div class="legend-item"><span class="badge badge-healthy">✅</span> תקין</div>
+<div class="legend-item"><span class="badge badge-bounce">⚠</span> דורש תשומת לב</div>
+<div class="legend-item"><span class="badge badge-fatigue">🔴</span> בעייתי</div>
+<div class="legend-item"><span class="badge badge-fatigue">⏸</span> להשהות מיד</div>
 </div>
 
-<h2>תובנות ניהוליות</h2>
+<h2>מה לעשות עכשיו</h2>
 <div class="two-col">
-<div class="card">
-<h3>🛑 להשהות מיד</h3>
-<div class="table-wrap">
-<table>
-<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>עלות לליד</th><th>מול ממוצע</th><th>לידים</th></tr>
-<tr><td>Brand Awareness</td><td>35-54 Females</td><td>$626</td><td class="warn">$625.78</td><td class="warn">+501%</td><td>1</td></tr>
-<tr><td>Broad - Tech</td><td>Tech Enthusiasts</td><td>$400</td><td class="warn">$399.70</td><td class="warn">+284%</td><td>1</td></tr>
-<tr><td>Broad - Tech</td><td>SaaS Buyers</td><td>$725</td><td class="warn">$241.77</td><td class="warn">+132%</td><td>3</td></tr>
-</table>
+<div>
+<div class="action-box">
+<strong>🛑 להשהות מיד (4 קבוצות):</strong><br>
+• Brand Awareness → 35-54 Females — <span class="bad">$625 לליד</span><br>
+• Broad Tech → Tech Enthusiasts — <span class="bad">$399 לליד</span><br>
+• Broad Tech → SaaS Buyers — <span class="bad">$241 לליד</span><br>
+• Broad Tech → Startup Founders — <span class="bad">$146 לליד</span><br>
+<small style="color:#9ca3af">ארבעתם מבזבזות $2,481 על 10 לידים בלבד (עלות ממוצעת $248 לליד)</small>
+</div>
+<div class="action-box" style="background:rgba(255,193,7,0.08);border-color:rgba(255,193,7,0.2)">
+<strong>⚠️ לטפל (3 קבוצות):</strong><br>
+• Webinar Lookalike 3% — תדירות 2.53 + נטישה 53% → <strong>לרענן קריאטיב</strong><br>
+• Retargeting 30-day — תדירות 2.66 → <strong>לצמצם קהל</strong><br>
+• Lookalike CA — $37 לליד, קרוב ליעד → <strong>לעקוב</strong>
 </div>
 </div>
-<div class="card">
-<h3>🏆 קהלים מובילים</h3>
-<div class="table-wrap">
-<table>
-<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>לידים</th><th>עלות לליד</th><th>המרה</th></tr>
-<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td>83</td><td class="highlight">$8.65</td><td>10.35%</td></tr>
-<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td>61</td><td class="highlight">$10.80</td><td>12.06%</td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>38</td><td class="highlight">$14.43</td><td>7.57%</td></tr>
-<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>39</td><td class="highlight">$15.12</td><td>9.44%</td></tr>
-<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>44</td><td class="highlight">$15.60</td><td>9.40%</td></tr>
+<div>
+<div class="action-box good-box">
+<strong>🚀 להגדיל תקציב (3 קבוצות):</strong><br>
+• Ebook → Digital Agencies — <span class="good">$8.65 לליד</span> + המרה 10.35%<br>
+• Retargeting → 7-day visitors — <span class="good">$10.80 לליד</span> + המרה 12.06%<br>
+• Ebook → CMOs — <span class="good">$15.60 לליד</span> + תדירות 1.30<br>
+<small style="color:#9ca3af">שלושתם מייצרות 188 לידים בעלות ממוצעת $10.96 לליד</small>
+</div>
+<div class="action-box good-box">
+<strong>📊 סיכום שבועי:</strong><br>
+<table style="font-size:12px;background:transparent;margin-top:8px">
+<tr><th>תאריך</th><th>הוצאה</th><th>עלות לליד</th><th></th></tr>
+<tr><td>10/04</td><td>$1,584</td><td>$25.95</td><td><span class="bar bar-cpl" style="width:52%"></span></td></tr>
+<tr><td>11/04</td><td>$1,405</td><td>$28.04</td><td><span class="bar bar-cpl" style="width:44%"></span></td></tr>
+<tr><td>12/04</td><td>$1,434</td><td>$34.91</td><td><span class="bar bar-cpl" style="width:30%"></span></td></tr>
+<tr><td>13/04</td><td>$1,645</td><td>$20.88</td><td><span class="bar bar-cpl" style="width:58%"></span></td></tr>
+<tr><td>14/04</td><td>$1,758</td><td>$20.37</td><td><span class="bar bar-cpl" style="width:60%"></span></td></tr>
+<tr><td>15/04</td><td>$1,579</td><td>$30.92</td><td><span class="bar bar-cpl" style="width:38%"></span></td></tr>
+<tr><td>16/04</td><td>$1,319</td><td>$20.24</td><td><span class="bar bar-cpl" style="width:60%"></span></td></tr>
 </table>
 </div>
 </div>
 </div>
 
-<h2>מגמת עלות לליד מול הוצאה</h2>
-<div class="card">
-<table>
-<tr><th>תאריך</th><th>הוצאה יומית</th><th>עלות לליד</th><th>מול יעד $50</th><th>ביצועים</th></tr>
-<tr><td>10/04</td><td>$1,584</td><td>$25.95</td><td class="highlight">48% מתחת</td><td><span class="trend-bar" style="width:48%"></span></td></tr>
-<tr><td>11/04</td><td>$1,405</td><td>$28.04</td><td class="highlight">44% מתחת</td><td><span class="trend-bar" style="width:44%"></span></td></tr>
-<tr><td>12/04</td><td>$1,434</td><td>$34.91</td><td class="highlight">30% מתחת</td><td><span class="trend-bar" style="width:30%"></span></td></tr>
-<tr><td>13/04</td><td>$1,645</td><td>$20.88</td><td class="highlight">58% מתחת</td><td><span class="trend-bar" style="width:58%"></span></td></tr>
-<tr><td>14/04</td><td>$1,758</td><td>$20.37</td><td class="highlight">59% מתחת</td><td><span class="trend-bar" style="width:59%"></span></td></tr>
-<tr><td>15/04</td><td>$1,579</td><td>$30.92</td><td class="highlight">38% מתחת</td><td><span class="trend-bar" style="width:38%"></span></td></tr>
-<tr><td>16/04</td><td>$1,319</td><td>$20.24</td><td class="highlight">60% מתחת</td><td><span class="trend-bar" style="width:60%"></span></td></tr>
-</table>
-<p style="margin-top:14px;text-align:center;color:#00CC96;font-weight:600">כל הימים משמעותית מתחת ליעד $50 לליד — החשבון מתפקד היטב ✅</p>
-</div>
-
-<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:30px">נוצר מנתוני דמו · חבר את פרטי ה-API של פייסבוק כדי לראות נתונים אמיתיים · גרסה אינטראקטיבית: <code>streamlit run app.py</code></p>
+<p style="text-align:center;color:#6b7280;font-size:11px;margin-top:24px">נתוני דמו · גרסה אינטראקטיבית: <code>streamlit run app.py</code></p>
 
 </body>
 </html>
