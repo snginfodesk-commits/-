@@ -1,182 +1,135 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Facebook Ads Optimization Report</title>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<title>דוח אופטימיזציה - פרסומות פייסבוק</title>
 <style>
-  :root {
-    --bg: #0f1117;
-    --card: #1a1c23;
-    --border: #2d2f36;
-    --text: #e6e6e6;
-    --muted: #9ca3af;
-    --accent: #636EFA;
-    --red: #EF553B;
-    --green: #00CC96;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    padding: 24px;
-    line-height: 1.5;
-  }
-  h1 { font-size: 28px; margin-bottom: 8px; }
-  h2 { font-size: 20px; margin: 32px 0 16px; color: var(--accent); }
-  h3 { font-size: 16px; margin: 0 0 8px; }
-  .subtitle { color: var(--muted); margin-bottom: 24px; }
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-  .kpi {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-  }
-  .kpi .label { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .kpi .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border-radius: 8px;
-    overflow: hidden;
-    font-size: 13px;
-    margin-bottom: 16px;
-  }
-  th {
-    background: #22242b;
-    padding: 10px 12px;
-    text-align: left;
-    font-weight: 600;
-    white-space: nowrap;
-    border-bottom: 2px solid var(--border);
-  }
-  td {
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  tr:hover td { background: rgba(99,110,250,0.07); }
-  .table-wrap { overflow-x: auto; border-radius: 8px; }
-  .chart-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 24px;
-  }
-  .legend-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 12px;
-    font-size: 13px;
-  }
-  .legend-box span {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  .legend-item { margin: 4px 16px 4px 0; display: inline-block; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#e6e6e6;padding:20px;min-height:100vh;line-height:1.6}
+h1{font-size:26px;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{text-align:center;color:#9ca3af;margin-bottom:28px;font-size:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px}
+.kpi{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 12px;text-align:center;transition:transform .2s}
+.kpi:hover{transform:translateY(-3px)}
+.kpi .label{color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.kpi .value{font-size:24px;font-weight:800;margin-top:4px;background:linear-gradient(135deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{font-size:18px;margin:28px 0 14px;color:#636EFA;border-bottom:2px solid rgba(99,110,250,0.3);padding-bottom:6px}
+.table-wrap{overflow-x:auto;border-radius:12px;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+table{width:100%;border-collapse:collapse;background:rgba(26,28,35,0.95);font-size:12px;white-space:nowrap}
+th{background:linear-gradient(135deg,#1e1e2e,#2d2f36);padding:10px 14px;text-align:right;font-weight:700;color:#a5b4fc;border-bottom:2px solid #636EFA;position:sticky;top:0}
+td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.06);text-align:right}
+tr:hover td{background:rgba(99,110,250,0.08)}
+tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-healthy{background:rgba(0,204,150,0.15);color:#00CC96;border:1px solid rgba(0,204,150,0.3)}
+.badge-fatigue{background:rgba(239,85,59,0.15);color:#EF553B;border:1px solid rgba(239,85,59,0.3)}
+.badge-bounce{background:rgba(255,193,7,0.15);color:#FFC107;border:1px solid rgba(255,193,7,0.3)}
+.badge-mismatch{background:rgba(255,152,0,0.15);color:#FF9800;border:1px solid rgba(255,152,0,0.3)}
+.badge-scale{background:rgba(0,204,150,0.25);color:#00ffba;border:1px solid rgba(0,255,186,0.4)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h3{font-size:15px;margin-bottom:10px;color:#e6e6e6}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;padding:14px;background:rgba(255,255,255,0.04);border-radius:10px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.trend-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#636EFA,#00CC96);display:inline-block;vertical-align:middle}
+.highlight{color:#00CC96;font-weight:700}
+.warn{color:#EF553B;font-weight:700}
+.section-icon{margin-left:6px}
+.spend-bar{height:6px;border-radius:3px;background:linear-gradient(90deg,#636EFA,#a78bfa);display:block;margin-top:4px}
 </style>
 </head>
 <body>
 
-<h1>Facebook Ads Optimization Report</h1>
-<p class="subtitle">Last 7 days &middot; Breakdown: Adset &middot; Target CPL: $50 &middot; Demo Data</p>
+<h1>דוח אופטימיזציה לפרסומות פייסבוק</h1>
+<p class="subtitle">7 ימים אחרונים · פירוט: קבוצת מודעות · יעד עלות לליד: $50 · נתוני דמו</p>
 
-<!-- KPIs -->
 <div class="kpi-row">
-  <div class="kpi"><div class="label">Total Spend</div><div class="value">$10,723.71</div></div>
-  <div class="kpi"><div class="label">Impressions</div><div class="value">803,126</div></div>
-  <div class="kpi"><div class="label">Link Clicks</div><div class="value">10,510</div></div>
-  <div class="kpi"><div class="label">Total Leads</div><div class="value">431</div></div>
-  <div class="kpi"><div class="label">Avg CPL</div><div class="value">$24.88</div></div>
+<div class="kpi"><div class="label">סה"כ הוצאה</div><div class="value">$10,724</div></div>
+<div class="kpi"><div class="label">חשיפות</div><div class="value">803,126</div></div>
+<div class="kpi"><div class="label">קליקים</div><div class="value">10,510</div></div>
+<div class="kpi"><div class="label">לידים</div><div class="value">431</div></div>
+<div class="kpi"><div class="label">עלות ממוצעת לליד</div><div class="value">$24.88</div></div>
 </div>
 
-<!-- Health Check Table -->
-<h2>Smart Analysis Table</h2>
+<h2>טבלת ניתוח חכם</h2>
 <div class="table-wrap">
-<table><tr><th>Campaign</th><th>Ad Set</th><th>Spend</th><th>Impressions</th><th>CTR %</th><th>CPM</th><th>Frequency</th><th>Link Clicks</th><th>LP Views</th><th>Leads</th><th>CPL</th><th>Conv Rate %</th><th>LP View Rate %</th><th>Health Status</th></tr>
-<tr><td>Brand Awareness - US</td><td>18-34 Males</td><td>$522.30</td><td>44,526</td><td>0.67%</td><td>$11.73</td><td>1.94</td><td>299</td><td>210</td><td>0</td><td>$0.00</td><td>0.00%</td><td>70.2%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Brand Awareness - US</td><td>35-54 Females</td><td>$625.78</td><td>54,832</td><td>0.83%</td><td>$11.41</td><td>2.40</td><td>457</td><td>265</td><td>1</td><td>$625.78</td><td>0.38%</td><td>58.0%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce</td></tr>
-<tr><td>Brand Awareness - US</td><td>Broad US</td><td>$648.87</td><td>55,380</td><td>0.68%</td><td>$11.72</td><td>1.97</td><td>375</td><td>243</td><td>0</td><td>$0.00</td><td>0.00%</td><td>64.8%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Broad - Interest Tech</td><td>SaaS Buyers</td><td>$725.30</td><td>83,843</td><td>0.59%</td><td>$8.65</td><td>1.96</td><td>494</td><td>325</td><td>3</td><td>$241.77</td><td>0.92%</td><td>65.8%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Broad - Interest Tech</td><td>Startup Founders</td><td>$730.77</td><td>79,834</td><td>0.73%</td><td>$9.15</td><td>2.33</td><td>581</td><td>362</td><td>5</td><td>$146.15</td><td>1.38%</td><td>62.3%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Broad - Interest Tech</td><td>Tech Enthusiasts</td><td>$399.70</td><td>46,613</td><td>0.55%</td><td>$8.57</td><td>2.01</td><td>256</td><td>185</td><td>1</td><td>$399.70</td><td>0.54%</td><td>72.3%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>CMOs</td><td>$686.59</td><td>46,023</td><td>1.82%</td><td>$14.92</td><td>1.30</td><td>836</td><td>468</td><td>44</td><td>$15.60</td><td>9.40%</td><td>56.0%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce | Ready to Scale</td></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>Content Marketers</td><td>$589.78</td><td>37,695</td><td>1.97%</td><td>$15.65</td><td>2.16</td><td>741</td><td>413</td><td>39</td><td>$15.12</td><td>9.44%</td><td>55.7%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce</td></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>Digital Agencies</td><td>$717.68</td><td>53,562</td><td>2.17%</td><td>$13.40</td><td>1.84</td><td>1,160</td><td>802</td><td>83</td><td>$8.65</td><td>10.35%</td><td>69.1%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Lead Gen - Webinar Q1</td><td>Interest - Marketing</td><td>$519.29</td><td>31,261</td><td>1.66%</td><td>$16.61</td><td>2.46</td><td>520</td><td>312</td><td>20</td><td>$25.96</td><td>6.41%</td><td>60.0%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Lead Gen - Webinar Q1</td><td>Lookalike 1%</td><td>$548.53</td><td>40,036</td><td>2.13%</td><td>$13.70</td><td>2.26</td><td>851</td><td>502</td><td>38</td><td>$14.43</td><td>7.57%</td><td>59.0%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce</td></tr>
-<tr><td>Lead Gen - Webinar Q1</td><td>Lookalike 3%</td><td>$500.92</td><td>27,948</td><td>1.42%</td><td>$17.92</td><td>2.53</td><td>396</td><td>212</td><td>12</td><td>$41.74</td><td>5.66%</td><td>53.5%</td><td style="background-color:#ffcccc;font-weight:600">High Fatigue - Refresh Creative | Page Load Issue/High Bounce</td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 1% - CA</td><td>$596.64</td><td>38,941</td><td>1.24%</td><td>$15.32</td><td>2.48</td><td>482</td><td>306</td><td>16</td><td>$37.29</td><td>5.23%</td><td>63.5%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 1% - US</td><td>$712.91</td><td>55,075</td><td>1.39%</td><td>$12.94</td><td>1.98</td><td>767</td><td>553</td><td>31</td><td>$23.00</td><td>5.61%</td><td>72.1%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Lookalike - Top Customers</td><td>LAL 2% - US</td><td>$544.36</td><td>44,531</td><td>1.56%</td><td>$12.22</td><td>2.08</td><td>696</td><td>511</td><td>28</td><td>$19.44</td><td>5.48%</td><td>73.4%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Retargeting - Cart Abandoners</td><td>30-day visitors</td><td>$473.26</td><td>18,313</td><td>2.50%</td><td>$25.84</td><td>2.66</td><td>458</td><td>250</td><td>23</td><td>$20.58</td><td>9.20%</td><td>54.6%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce</td></tr>
-<tr><td>Retargeting - Cart Abandoners</td><td>7-day visitors</td><td>$658.85</td><td>23,660</td><td>2.73%</td><td>$27.85</td><td>1.94</td><td>645</td><td>506</td><td>61</td><td>$10.80</td><td>12.06%</td><td>78.5%</td><td style="background-color:#ffffff;font-weight:600">Healthy</td></tr>
-<tr><td>Retargeting - Cart Abandoners</td><td>Email list</td><td>$522.18</td><td>21,053</td><td>2.36%</td><td>$24.80</td><td>1.88</td><td>496</td><td>241</td><td>26</td><td>$20.08</td><td>10.79%</td><td>48.6%</td><td style="background-color:#fff3cd;font-weight:600">Page Load Issue/High Bounce</td></tr></table>
-</div>
-<div class="legend-box">
-  <strong>Health Status Legend:</strong><br>
-  <span class="legend-item"><span style="background:#ffcccc"></span>High Fatigue - Refresh Creative</span>
-  <span class="legend-item"><span style="background:#fff3cd"></span>Page Load Issue / High Bounce</span>
-  <span class="legend-item"><span style="background:#ffd6cc"></span>Landing Page / Offer Mismatch</span>
-  <span class="legend-item"><span style="background:#ccffcc"></span>Ready to Scale</span>
+<table>
+<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>חשיפות</th><th>CTR</th><th>CPM</th><th>תדירות</th><th>קליקים</th><th>צפיות דף</th><th>לידים</th><th>עלות לליד</th><th>המרה</th><th>צפייה בדף</th><th>סטטוס</th></tr>
+<tr><td>Brand Awareness - US</td><td>18-34 Males</td><td>$522</td><td>44,526</td><td>0.67%</td><td>$11.73</td><td>1.94</td><td>299</td><td>210</td><td>0</td><td>-</td><td>0.00%</td><td>70.2%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Brand Awareness - US</td><td>35-54 Females</td><td>$626</td><td>54,832</td><td>0.83%</td><td>$11.41</td><td>2.40</td><td>457</td><td>265</td><td>1</td><td class="warn">$625.78</td><td>0.38%</td><td>58.0%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+<tr><td>Brand Awareness - US</td><td>Broad US</td><td>$649</td><td>55,380</td><td>0.68%</td><td>$11.72</td><td>1.97</td><td>375</td><td>243</td><td>0</td><td>-</td><td>0.00%</td><td>64.8%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Broad - Interest Tech</td><td>SaaS Buyers</td><td>$725</td><td>83,843</td><td>0.59%</td><td>$8.65</td><td>1.96</td><td>494</td><td>325</td><td>3</td><td class="warn">$241.77</td><td>0.92%</td><td>65.8%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Broad - Interest Tech</td><td>Startup Founders</td><td>$731</td><td>79,834</td><td>0.73%</td><td>$9.15</td><td>2.33</td><td>581</td><td>362</td><td>5</td><td class="warn">$146.15</td><td>1.38%</td><td>62.3%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Broad - Interest Tech</td><td>Tech Enthusiasts</td><td>$400</td><td>46,613</td><td>0.55%</td><td>$8.57</td><td>2.01</td><td>256</td><td>185</td><td>1</td><td class="warn">$399.70</td><td>0.54%</td><td>72.3%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>46,023</td><td>1.82%</td><td>$14.92</td><td>1.30</td><td>836</td><td>468</td><td>44</td><td class="highlight">$15.60</td><td>9.40%</td><td>56.0%</td><td><span class="badge badge-scale">🟢 מוכן לסקיילינג</span></td></tr>
+<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>37,695</td><td>1.97%</td><td>$15.65</td><td>2.16</td><td>741</td><td>413</td><td>39</td><td class="highlight">$15.12</td><td>9.44%</td><td>55.7%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td>53,562</td><td>2.17%</td><td>$13.40</td><td>1.84</td><td>1,160</td><td>802</td><td>83</td><td class="highlight">$8.65</td><td>10.35%</td><td>69.1%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Interest - Marketing</td><td>$519</td><td>31,261</td><td>1.66%</td><td>$16.61</td><td>2.46</td><td>520</td><td>312</td><td>20</td><td>$25.96</td><td>6.41%</td><td>60.0%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>40,036</td><td>2.13%</td><td>$13.70</td><td>2.26</td><td>851</td><td>502</td><td>38</td><td class="highlight">$14.43</td><td>7.57%</td><td>59.0%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Lookalike 3%</td><td>$501</td><td>27,948</td><td>1.42%</td><td>$17.92</td><td>2.53</td><td>396</td><td>212</td><td>12</td><td>$41.74</td><td>5.66%</td><td>53.5%</td><td><span class="badge badge-fatigue">🔴 עייפות קריאטיב</span></td></tr>
+<tr><td>Lookalike - Top Customers</td><td>LAL 1% - CA</td><td>$597</td><td>38,941</td><td>1.24%</td><td>$15.32</td><td>2.48</td><td>482</td><td>306</td><td>16</td><td>$37.29</td><td>5.23%</td><td>63.5%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lookalike - Top Customers</td><td>LAL 1% - US</td><td>$713</td><td>55,075</td><td>1.39%</td><td>$12.94</td><td>1.98</td><td>767</td><td>553</td><td>31</td><td>$23.00</td><td>5.61%</td><td>72.1%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Lookalike - Top Customers</td><td>LAL 2% - US</td><td>$544</td><td>44,531</td><td>1.56%</td><td>$12.22</td><td>2.08</td><td>696</td><td>511</td><td>28</td><td class="highlight">$19.44</td><td>5.48%</td><td>73.4%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Retargeting</td><td>30-day visitors</td><td>$473</td><td>18,313</td><td>2.50%</td><td>$25.84</td><td>2.66</td><td>458</td><td>250</td><td>23</td><td>$20.58</td><td>9.20%</td><td>54.6%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td>23,660</td><td>2.73%</td><td>$27.85</td><td>1.94</td><td>645</td><td>506</td><td>61</td><td class="highlight">$10.80</td><td>12.06%</td><td>78.5%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
+<tr><td>Retargeting</td><td>Email list</td><td>$522</td><td>21,053</td><td>2.36%</td><td>$24.80</td><td>1.88</td><td>496</td><td>241</td><td>26</td><td>$20.08</td><td>10.79%</td><td>48.6%</td><td><span class="badge badge-bounce">🟡 נטישה גבוהה</span></td></tr>
+</table>
 </div>
 
-<!-- Recommendations -->
-<h2>Manager Insights</h2>
+<div class="legend">
+<div class="legend-item"><span class="badge badge-fatigue">🔴</span> עייפות קריאטיב - תדירות > 2.5 ו-CTR נמוך</div>
+<div class="legend-item"><span class="badge badge-bounce">🟡</span> בעיית טעינה - צפייה בדף < 60%</div>
+<div class="legend-item"><span class="badge badge-mismatch">🟠</span> חוסר התאמה - CTR גבוה אבל המרה נמוכה</div>
+<div class="legend-item"><span class="badge badge-scale">🟢</span> מוכן לסקיילינג - CPL נמוך ותדירות נמוכה</div>
+<div class="legend-item"><span class="badge badge-healthy">✅</span> תקין</div>
+</div>
+
+<h2>תובנות ניהוליות</h2>
 <div class="two-col">
-  <div>
-    <h3>Pause Immediately (Top 3 worst CPL vs average)</h3>
-    <div class="table-wrap"><table><tr><th>Campaign</th><th>Ad Set</th><th>Spend</th><th>CPL</th><th>CPL vs Avg %</th><th>Leads</th></tr>
-<tr><td>Brand Awareness - US</td><td>35-54 Females</td><td>$625.78</td><td>$625.78</td><td>+501.0%</td><td>1</td></tr>
-<tr><td>Broad - Interest Tech</td><td>Tech Enthusiasts</td><td>$399.70</td><td>$399.70</td><td>+283.8%</td><td>1</td></tr>
-<tr><td>Broad - Interest Tech</td><td>SaaS Buyers</td><td>$725.30</td><td>$241.77</td><td>+132.2%</td><td>3</td></tr></table></div>
-  </div>
-  <div>
-    <h3>Best Performing Audiences (by CPL)</h3>
-    <div class="table-wrap"><table><tr><th>Campaign</th><th>Ad Set</th><th>Spend</th><th>Leads</th><th>CPL</th><th>Conv Rate %</th></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>Digital Agencies</td><td>$717.68</td><td>83</td><td>$8.65</td><td>10.35%</td></tr>
-<tr><td>Retargeting - Cart Abandoners</td><td>7-day visitors</td><td>$658.85</td><td>61</td><td>$10.80</td><td>12.06%</td></tr>
-<tr><td>Lead Gen - Webinar Q1</td><td>Lookalike 1%</td><td>$548.53</td><td>38</td><td>$14.43</td><td>7.57%</td></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>Content Marketers</td><td>$589.78</td><td>39</td><td>$15.12</td><td>9.44%</td></tr>
-<tr><td>Lead Gen - Ebook Download</td><td>CMOs</td><td>$686.59</td><td>44</td><td>$15.60</td><td>9.40%</td></tr></table></div>
-  </div>
+<div class="card">
+<h3>🛑 להשהות מיד</h3>
+<div class="table-wrap">
+<table>
+<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>עלות לליד</th><th>מול ממוצע</th><th>לידים</th></tr>
+<tr><td>Brand Awareness</td><td>35-54 Females</td><td>$626</td><td class="warn">$625.78</td><td class="warn">+501%</td><td>1</td></tr>
+<tr><td>Broad - Tech</td><td>Tech Enthusiasts</td><td>$400</td><td class="warn">$399.70</td><td class="warn">+284%</td><td>1</td></tr>
+<tr><td>Broad - Tech</td><td>SaaS Buyers</td><td>$725</td><td class="warn">$241.77</td><td class="warn">+132%</td><td>3</td></tr>
+</table>
+</div>
+</div>
+<div class="card">
+<h3>🏆 קהלים מובילים</h3>
+<div class="table-wrap">
+<table>
+<tr><th>קמפיין</th><th>קבוצת מודעות</th><th>הוצאה</th><th>לידים</th><th>עלות לליד</th><th>המרה</th></tr>
+<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td>83</td><td class="highlight">$8.65</td><td>10.35%</td></tr>
+<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td>61</td><td class="highlight">$10.80</td><td>12.06%</td></tr>
+<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>38</td><td class="highlight">$14.43</td><td>7.57%</td></tr>
+<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>39</td><td class="highlight">$15.12</td><td>9.44%</td></tr>
+<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>44</td><td class="highlight">$15.60</td><td>9.40%</td></tr>
+</table>
+</div>
+</div>
 </div>
 
-<!-- CPL vs Spend Trend -->
-<h2>CPL vs. Spend Over Time</h2>
-<div class="chart-box"><div>                            <div id="c0d7a187-008d-4e77-baba-5df86821c4e8" class="plotly-graph-div" style="height:400px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("c0d7a187-008d-4e77-baba-5df86821c4e8")) {                    Plotly.newPlot(                        "c0d7a187-008d-4e77-baba-5df86821c4e8",                        [{"marker":{"color":"#636EFA"},"name":"Daily Spend ($)","opacity":0.6,"x":["2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16"],"y":{"dtype":"f8","bdata":"ZmZmZmavmEAzMzMzM+eVQLgehetRcpZArkfhehTImUCuR+F6FEibQD0K16Nwq5hAuB6F61HKlEA="},"yaxis":"y","type":"bar"},{"line":{"color":"#EF553B","width":3},"mode":"lines+markers","name":"CPL ($)","x":["2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16"],"y":{"dtype":"f8","bdata":"PWeVrjDmOUDvp8ZLNwk8QJMYBFYO9UFA5Mv9dubiNEDhcEJzdE00QHWo2w5C9T5AuB6F61HKNEA="},"yaxis":"y2","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"shapes":[{"line":{"color":"green","dash":"dash"},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":50.0,"y1":50.0,"yref":"y2"}],"annotations":[{"showarrow":false,"text":"Target CPL $50","x":1,"xanchor":"right","xref":"x domain","y":50.0,"yanchor":"bottom","yref":"y2"}],"yaxis":{"title":{"text":"Daily Spend ($)"},"side":"left"},"yaxis2":{"title":{"text":"CPL ($)"},"side":"right","overlaying":"y"},"legend":{"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"right","x":1},"margin":{"t":40},"height":400},                        {"responsive": true}                    )                };            </script>        </div></div>
-
-<!-- Additional Charts -->
-<h2>Performance Breakdown</h2>
-<div class="two-col">
-  <div class="chart-box">
-    <h3>Spend by Campaign</h3>
-    <div>                            <div id="9dc25d1b-7912-4bfe-b27f-b289231345ba" class="plotly-graph-div" style="height:350px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("9dc25d1b-7912-4bfe-b27f-b289231345ba")) {                    Plotly.newPlot(                        "9dc25d1b-7912-4bfe-b27f-b289231345ba",                        [{"hovertemplate":"Spend ($)=%{x}\u003cbr\u003e=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","orientation":"h","showlegend":false,"textposition":"auto","x":{"dtype":"f8","bdata":"KVyPwvWCmEBcj8L1KNmZQMzMzMzME5xAcD0K16P3nECuR+F6FP+cQDMzMzMzKJ9A"},"xaxis":"x","y":["Lead Gen - Webinar Q1","Retargeting - Cart Abandoners","Brand Awareness - US","Lookalike - Top Customers","Broad - Interest Tech","Lead Gen - Ebook Download"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Spend ($)"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":""}},"legend":{"tracegroupgap":0},"margin":{"t":10},"barmode":"relative","height":350},                        {"responsive": true}                    )                };            </script>        </div>
-  </div>
-  <div class="chart-box">
-    <h3>CTR vs Frequency</h3>
-    <div>                            <div id="8dade4fe-eea1-49c2-be69-b26668d85c62" class="plotly-graph-div" style="height:350px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("8dade4fe-eea1-49c2-be69-b26668d85c62")) {                    Plotly.newPlot(                        "8dade4fe-eea1-49c2-be69-b26668d85c62",                        [{"customdata":[["18-34 Males",0.0],["35-54 Females",625.78],["Broad US",0.0]],"hovertemplate":"Campaign=Brand Awareness - US\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Brand Awareness - US","marker":{"color":"#636efa","size":{"dtype":"f8","bdata":"ZmZmZmZSgEAK16NwPY6DQClcj8L1RoRA"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Brand Awareness - US","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"CtejcD0K\u002fz9zn11AbCoDQFveGMFEf\u002f8\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"cT0K16Nw5T+PwvUoXI\u002fqP8P1KFyPwuU\u002f"},"yaxis":"y","type":"scatter"},{"customdata":[["SaaS Buyers",241.77],["Startup Founders",146.15],["Tech Enthusiasts",399.7]],"hovertemplate":"Campaign=Broad - Interest Tech\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Broad - Interest Tech","marker":{"color":"#EF553B","size":{"dtype":"f8","bdata":"ZmZmZmaqhkBcj8L1KNaGQDMzMzMz+3hA"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Broad - Interest Tech","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"h5z77AJi\u002fz8599kFxKYCQOqgDuqgDgBA"},"xaxis":"x","y":{"dtype":"f8","bdata":"4XoUrkfh4j9cj8L1KFznP5qZmZmZmeE\u002f"},"yaxis":"y","type":"scatter"},{"customdata":[["CMOs",15.6],["Content Marketers",15.12],["Digital Agencies",8.65]],"hovertemplate":"Campaign=Lead Gen - Ebook Download\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Lead Gen - Ebook Download","marker":{"color":"#00cc96","size":{"dtype":"f8","bdata":"H4XrUbh0hUAK16NwPW6CQD0K16NwbYZA"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Lead Gen - Ebook Download","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"or+T1fLG9D\u002fdZxcQm0oBQEcw0d\u002fJav0\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"H4XrUbge\u002fT+F61G4HoX\u002fP1yPwvUoXAFA"},"yaxis":"y","type":"scatter"},{"customdata":[["Interest - Marketing",25.96],["Lookalike 1%",14.43],["Lookalike 3%",41.74]],"hovertemplate":"Campaign=Lead Gen - Webinar Q1\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Lead Gen - Webinar Q1","marker":{"color":"#ab63fa","size":{"dtype":"f8","bdata":"uB6F61E6gEAK16NwPSSBQB+F61G4Tn9A"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Lead Gen - Webinar Q1","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"2VQacu6zA0DUQR3UQR0CQP6drJY3RgRA"},"xaxis":"x","y":{"dtype":"f8","bdata":"j8L1KFyP+j8K16NwPQoBQLgehetRuPY\u002f"},"yaxis":"y","type":"scatter"},{"customdata":[["LAL 1% - CA",37.29],["LAL 1% - US",23.0],["LAL 2% - US",19.44]],"hovertemplate":"Campaign=Lookalike - Top Customers\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Lookalike - Top Customers","marker":{"color":"#FFA15A","size":{"dtype":"f8","bdata":"hetRuB6lgkDhehSuR0eGQHsUrkfhAoFA"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Lookalike - Top Customers","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"GBCbSkPOA0ADYlNpyLn\u002fP6RwPQrXowBA"},"xaxis":"x","y":{"dtype":"f8","bdata":"16NwPQrX8z89CtejcD32P\u002fYoXI\u002fC9fg\u002f"},"yaxis":"y","type":"scatter"},{"customdata":[["30-day visitors",20.58],["7-day visitors",10.8],["Email list",20.08]],"hovertemplate":"Campaign=Retargeting - Cart Abandoners\u003cbr\u003eFrequency=%{x}\u003cbr\u003eCTR %=%{y}\u003cbr\u003espend=%{marker.size}\u003cbr\u003eadset_name=%{customdata[0]}\u003cbr\u003ecpl=%{customdata[1]}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Retargeting - Cart Abandoners","marker":{"color":"#19d3f3","size":{"dtype":"f8","bdata":"XI\u002fC9SiUfUDNzMzMzJaEQD0K16NwUYBA"},"sizemode":"area","sizeref":1.826925,"symbol":"circle"},"mode":"markers","name":"Retargeting - Cart Abandoners","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"B3VQB3VQBUDgyWp5YwT\u002fP2nIuc8uIP4\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAAAABEDXo3A9CtcFQOF6FK5H4QJA"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Frequency"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"CTR %"}},"legend":{"title":{"text":"Campaign"},"tracegroupgap":0,"itemsizing":"constant"},"margin":{"t":10},"height":350},                        {"responsive": true}                    )                };            </script>        </div>
-  </div>
+<h2>מגמת עלות לליד מול הוצאה</h2>
+<div class="card">
+<table>
+<tr><th>תאריך</th><th>הוצאה יומית</th><th>עלות לליד</th><th>מול יעד $50</th><th>ביצועים</th></tr>
+<tr><td>10/04</td><td>$1,584</td><td>$25.95</td><td class="highlight">48% מתחת</td><td><span class="trend-bar" style="width:48%"></span></td></tr>
+<tr><td>11/04</td><td>$1,405</td><td>$28.04</td><td class="highlight">44% מתחת</td><td><span class="trend-bar" style="width:44%"></span></td></tr>
+<tr><td>12/04</td><td>$1,434</td><td>$34.91</td><td class="highlight">30% מתחת</td><td><span class="trend-bar" style="width:30%"></span></td></tr>
+<tr><td>13/04</td><td>$1,645</td><td>$20.88</td><td class="highlight">58% מתחת</td><td><span class="trend-bar" style="width:58%"></span></td></tr>
+<tr><td>14/04</td><td>$1,758</td><td>$20.37</td><td class="highlight">59% מתחת</td><td><span class="trend-bar" style="width:59%"></span></td></tr>
+<tr><td>15/04</td><td>$1,579</td><td>$30.92</td><td class="highlight">38% מתחת</td><td><span class="trend-bar" style="width:38%"></span></td></tr>
+<tr><td>16/04</td><td>$1,319</td><td>$20.24</td><td class="highlight">60% מתחת</td><td><span class="trend-bar" style="width:60%"></span></td></tr>
+</table>
+<p style="margin-top:14px;text-align:center;color:#00CC96;font-weight:600">כל הימים משמעותית מתחת ליעד $50 לליד — החשבון מתפקד היטב ✅</p>
 </div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:30px">נוצר מנתוני דמו · חבר את פרטי ה-API של פייסבוק כדי לראות נתונים אמיתיים · גרסה אינטראקטיבית: <code>streamlit run app.py</code></p>
 
 </body>
 </html>
