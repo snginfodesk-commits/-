@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Facebook Ads Optimization Dashboard - Smarter Campaign Decisions</title>
-<meta name="description" content="An interactive Streamlit dashboard that connects to the Facebook Marketing API, runs automated health checks, and turns raw ad data into clear optimization actions.">
+<title>דשבורד אופטימיזציה לפייסבוק אדס - החלטות חכמות יותר לקמפיינים</title>
+<meta name="description" content="דשבורד אינטראקטיבי שמתחבר ל-Facebook Marketing API, מריץ בדיקות תקינות אוטומטיות והופך נתוני קמפיינים לפעולות אופטימיזציה ברורות.">
 <style>
   :root {
     --bg: #0f1117;
@@ -22,11 +22,12 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Heebo', 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    text-align: right;
   }
   a { color: var(--accent-2); text-decoration: none; }
   a:hover { color: var(--accent); }
@@ -60,14 +61,15 @@
     height: 10px;
     border-radius: 50%;
     background: var(--accent);
-    margin-right: 8px;
+    margin-left: 8px;
     vertical-align: middle;
   }
   .nav-links a {
-    margin-left: 24px;
+    margin-right: 24px;
     color: var(--muted);
     font-size: 14px;
   }
+  .nav-links a:first-child { margin-right: 0; }
   .nav-links a:hover { color: var(--text); }
 
   /* Hero */
@@ -81,18 +83,17 @@
   .eyebrow {
     display: inline-block;
     font-size: 12px;
-    text-transform: uppercase;
     letter-spacing: 1.5px;
     color: var(--accent-2);
     border: 1px solid var(--border);
     background: var(--bg-soft);
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 999px;
     margin-bottom: 20px;
   }
   h1 {
     font-size: 52px;
-    line-height: 1.1;
+    line-height: 1.2;
     font-weight: 800;
     margin-bottom: 20px;
     letter-spacing: -0.5px;
@@ -108,6 +109,7 @@
     color: var(--muted);
     max-width: 720px;
     margin: 0 auto 36px;
+    line-height: 1.6;
   }
   .cta-row {
     display: flex;
@@ -117,13 +119,14 @@
   }
   .btn {
     display: inline-block;
-    padding: 14px 24px;
+    padding: 14px 28px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 15px;
     border: 1px solid transparent;
     cursor: pointer;
     transition: transform 0.08s ease, background 0.15s ease;
+    font-family: inherit;
   }
   .btn:active { transform: translateY(1px); }
   .btn-primary {
@@ -137,6 +140,36 @@
     border-color: var(--border);
   }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent-2); }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+    max-width: 880px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent-2);
+    line-height: 1.2;
+  }
+  .stat .lbl {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
 
   /* Sections */
   section { padding: 72px 0; }
@@ -172,8 +205,8 @@
     transform: translateY(-2px);
   }
   .feature .icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 8px;
     background: rgba(99,110,250,0.15);
     color: var(--accent-2);
@@ -184,8 +217,8 @@
     font-weight: 700;
     margin-bottom: 14px;
   }
-  .feature h3 { font-size: 17px; margin-bottom: 8px; }
-  .feature p { color: var(--muted); font-size: 14px; }
+  .feature h3 { font-size: 18px; margin-bottom: 8px; }
+  .feature p { color: var(--muted); font-size: 15px; }
 
   /* Health flags table */
   .flags-table {
@@ -195,12 +228,12 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    font-size: 14px;
+    font-size: 15px;
   }
   .flags-table th {
     background: #22242b;
     padding: 14px 16px;
-    text-align: left;
+    text-align: right;
     font-weight: 600;
     border-bottom: 2px solid var(--border);
   }
@@ -212,10 +245,11 @@
   .flags-table tr:last-child td { border-bottom: none; }
   .flag-pill {
     display: inline-block;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
+    white-space: nowrap;
   }
   .flag-red { background: rgba(239,85,59,0.15); color: var(--red); }
   .flag-amber { background: rgba(245,181,74,0.15); color: var(--amber); }
@@ -235,7 +269,7 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 24px;
+    padding: 28px 24px 24px;
     position: relative;
   }
   .step::before {
@@ -243,9 +277,9 @@
     content: counter(step);
     position: absolute;
     top: -14px;
-    left: 24px;
-    width: 28px;
-    height: 28px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: var(--accent);
     color: #fff;
@@ -253,32 +287,53 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 15px;
   }
-  .step h3 { margin: 8px 0; font-size: 17px; }
-  .step p { color: var(--muted); font-size: 14px; }
+  .step h3 { margin: 8px 0; font-size: 18px; }
+  .step p { color: var(--muted); font-size: 15px; }
   .step code {
     display: block;
     background: var(--bg);
     border: 1px solid var(--border);
-    padding: 10px 12px;
+    padding: 12px 14px;
     border-radius: 6px;
-    margin-top: 12px;
+    margin-top: 14px;
     font-size: 13px;
     color: var(--green);
     overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-family: 'Menlo', 'Consolas', monospace;
   }
+
+  /* Quote */
+  .quote {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 28px 32px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .quote p {
+    font-size: 19px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .quote .who { color: var(--muted); font-size: 14px; }
 
   /* CTA */
   .cta-block {
     background: linear-gradient(135deg, rgba(99,110,250,0.15), rgba(0,204,150,0.10));
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 48px 32px;
+    padding: 56px 32px;
     text-align: center;
   }
   .cta-block h2 { margin-bottom: 12px; }
-  .cta-block p { color: var(--muted); margin-bottom: 28px; }
+  .cta-block p { color: var(--muted); margin-bottom: 28px; font-size: 17px; }
 
   /* Footer */
   footer {
@@ -292,9 +347,10 @@
   @media (max-width: 640px) {
     h1 { font-size: 36px; }
     .lede { font-size: 17px; }
-    .nav-links a { margin-left: 14px; font-size: 13px; }
+    .nav-links a { margin-right: 14px; font-size: 13px; }
     .hero { padding: 64px 0 56px; }
     section { padding: 56px 0; }
+    h2 { font-size: 26px; }
   }
 </style>
 </head>
@@ -304,9 +360,9 @@
   <div class="nav-inner">
     <div class="brand"><span class="dot"></span>Ads Optimizer</div>
     <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#flags">Health Checks</a>
-      <a href="#start">Get Started</a>
+      <a href="#features">יכולות</a>
+      <a href="#flags">בדיקות תקינות</a>
+      <a href="#start">התחלה מהירה</a>
     </div>
   </div>
 </nav>
@@ -314,52 +370,71 @@
 <header class="hero">
   <div class="container">
     <span class="eyebrow">Facebook Marketing API · Streamlit</span>
-    <h1>Stop guessing. <span class="grad">Optimize Facebook Ads with confidence.</span></h1>
+    <h1>תפסיקו לנחש. <span class="grad">תקבלו החלטות חכמות לקמפיינים.</span></h1>
     <p class="lede">
-      An interactive dashboard that pulls your campaign data, runs automated health checks,
-      and tells you exactly which ads to pause, scale, or refresh — in plain English.
+      דשבורד אינטראקטיבי ששולף את נתוני הקמפיינים שלכם, מריץ בדיקות תקינות אוטומטיות,
+      ומציג בדיוק אילו מודעות לעצור, לסקייל או לרענן — בעברית פשוטה.
     </p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="#start">Get Started</a>
-      <a class="btn btn-secondary" href="fb_ads_report.html">View Sample Report</a>
+      <a class="btn btn-primary" href="#start">בואו נתחיל</a>
+      <a class="btn btn-secondary" href="fb_ads_report.html">צפו בדוח לדוגמה</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">4</div>
+        <div class="lbl">בדיקות תקינות מובנות</div>
+      </div>
+      <div class="stat">
+        <div class="num">7-30</div>
+        <div class="lbl">ימים של נתונים בלחיצה</div>
+      </div>
+      <div class="stat">
+        <div class="num">100%</div>
+        <div class="lbl">קוד פתוח, ריצה מקומית</div>
+      </div>
+      <div class="stat">
+        <div class="num">0</div>
+        <div class="lbl">עלות שימוש</div>
+      </div>
     </div>
   </div>
 </header>
 
 <section id="features">
   <div class="container">
-    <h2>Everything you need to act on ad data</h2>
-    <p class="section-sub">From raw API metrics to a clear list of next steps.</p>
+    <h2>כל מה שצריך כדי לפעול לפי הנתונים</h2>
+    <p class="section-sub">מנתונים גולמיים של ה-API ועד רשימת פעולות ברורה לביצוע.</p>
     <div class="features">
       <div class="feature">
         <div class="icon">API</div>
-        <h3>Live Data Integration</h3>
-        <p>Connect your ad account and fetch campaign and ad set metrics for 7, 14, or 30-day windows directly from the Facebook Marketing API.</p>
+        <h3>חיבור ישיר לפייסבוק</h3>
+        <p>חיבור לחשבון המודעות שלכם ושליפה אוטומטית של מדדי קמפיינים וקבוצות מודעות לחלון של 7, 14 או 30 יום ישירות מ-Facebook Marketing API.</p>
       </div>
       <div class="feature">
         <div class="icon">AI</div>
-        <h3>Smart Analysis Table</h3>
-        <p>Automated health checks flag creative fatigue, funnel leaks, conversion issues, and scaling opportunities at a glance.</p>
+        <h3>טבלת ניתוח חכמה</h3>
+        <p>בדיקות תקינות אוטומטיות שמסמנות שחיקת קריאייטיב, נזילות במשפך, בעיות המרה והזדמנויות לסקיילינג — הכל במבט אחד.</p>
       </div>
       <div class="feature">
-        <div class="icon">MI</div>
-        <h3>Manager Insights</h3>
-        <p>See which ads to pause, your best-performing audiences, and CPL vs. spend trends — without building a single pivot table.</p>
+        <div class="icon">+</div>
+        <h3>תובנות למנהלים</h3>
+        <p>גלו אילו מודעות לעצור, מי הקהלים הכי רווחיים, ומה המגמה של עלות לליד מול הוצאה — בלי לבנות אף טבלת ציר.</p>
       </div>
       <div class="feature">
         <div class="icon">CSV</div>
-        <h3>One-Click Export</h3>
-        <p>Download health check results and daily performance data as CSV for reporting, sharing, or further analysis.</p>
+        <h3>ייצוא בלחיצה</h3>
+        <p>הורידו את תוצאות בדיקות התקינות והנתונים היומיים כקובץ CSV לדוחות, שיתוף ישיר או ניתוח נוסף.</p>
       </div>
       <div class="feature">
         <div class="icon">DEMO</div>
-        <h3>Demo Mode</h3>
-        <p>Explore the full dashboard with realistic sample data before you connect any credentials.</p>
+        <h3>מצב הדגמה</h3>
+        <p>חוו את הדשבורד המלא עם נתוני דמו ריאליסטיים — לפני שתצטרכו לחבר אפילו מפתח אחד של API.</p>
       </div>
       <div class="feature">
         <div class="icon">$</div>
-        <h3>Target CPL Tuning</h3>
-        <p>Set your target cost per lead and let the dashboard surface scale-ready ad sets running well below it.</p>
+        <h3>יעד עלות לליד</h3>
+        <p>הגדירו את ה-CPL היעד שלכם, והדשבורד יזהה לכם את קבוצות המודעות שמוכנות לסקייל בלחיצה.</p>
       </div>
     </div>
   </div>
@@ -367,37 +442,37 @@
 
 <section id="flags" class="alt">
   <div class="container">
-    <h2>Built-in health checks</h2>
-    <p class="section-sub">Every ad set is automatically scored against four diagnostic rules so you spend less time in spreadsheets.</p>
+    <h2>בדיקות תקינות מובנות</h2>
+    <p class="section-sub">כל קבוצת מודעות מקבלת ציון אוטומטי מול ארבעה כללי אבחון — כך אתם מבלים פחות זמן באקסל.</p>
     <div class="table-wrap">
       <table class="flags-table">
         <thead>
           <tr>
-            <th>Flag</th>
-            <th>Triggered When</th>
-            <th>Recommended Action</th>
+            <th>סטטוס</th>
+            <th>נקבע כש...</th>
+            <th>פעולה מומלצת</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="flag-pill flag-red">High Fatigue</span></td>
-            <td>Frequency &gt; 2.5 and CTR below average</td>
-            <td>Refresh creative, test new angles</td>
+            <td><span class="flag-pill flag-red">שחיקה גבוהה</span></td>
+            <td>תדירות מעל 2.5 ו-CTR נמוך מהממוצע</td>
+            <td>רענון קריאייטיב, בדיקת זוויות חדשות</td>
           </tr>
           <tr>
-            <td><span class="flag-pill flag-amber">Page Load / High Bounce</span></td>
-            <td>LP View Rate &lt; 60% of clicks</td>
-            <td>Check page speed and mobile experience</td>
+            <td><span class="flag-pill flag-amber">בעיית טעינה / נטישה</span></td>
+            <td>שיעור צפייה בדף נחיתה מתחת ל-60% מההקלקות</td>
+            <td>בדיקת מהירות הדף וחוויית מובייל</td>
           </tr>
           <tr>
-            <td><span class="flag-pill flag-blue">LP / Offer Mismatch</span></td>
-            <td>CTR &gt; 1.2% but Conv. Rate &lt; 5%</td>
-            <td>Align landing page with ad messaging</td>
+            <td><span class="flag-pill flag-blue">פער דף נחיתה / הצעה</span></td>
+            <td>CTR מעל 1.2% אך שיעור המרה מתחת ל-5%</td>
+            <td>התאמת דף הנחיתה למסר שבמודעה</td>
           </tr>
           <tr>
-            <td><span class="flag-pill flag-green">Ready to Scale</span></td>
-            <td>CPL 20%+ below target, Frequency &lt; 1.5</td>
-            <td>Increase budget incrementally</td>
+            <td><span class="flag-pill flag-green">מוכן לסקייל</span></td>
+            <td>CPL נמוך ב-20%+ מהיעד ותדירות מתחת ל-1.5</td>
+            <td>הגדלה הדרגתית של תקציב</td>
           </tr>
         </tbody>
       </table>
@@ -405,38 +480,47 @@
   </div>
 </section>
 
-<section id="start">
+<section>
   <div class="container">
-    <h2>Up and running in three steps</h2>
-    <p class="section-sub">Python 3.9+ is the only prerequisite. Demo mode works without API credentials.</p>
+    <div class="quote">
+      <p>"מנהלי קמפיינים מבזבזים שעות על ייצוא נתונים מ-Ads Manager ובניית טבלאות אקסל. הדשבורד הזה הופך את כל התהליך לתשובה אחת ברורה: מה עושים עכשיו."</p>
+      <span class="who">— מהפילוסופיה של הפרויקט</span>
+    </div>
+  </div>
+</section>
+
+<section id="start" class="alt">
+  <div class="container">
+    <h2>למעלה ורצים בשלושה שלבים</h2>
+    <p class="section-sub">הדרישה היחידה היא Python 3.9+. מצב ההדגמה עובד בלי שום אישורי API.</p>
     <div class="steps">
       <div class="step">
-        <h3>Install dependencies</h3>
-        <p>Create a virtual environment and install the requirements.</p>
+        <h3>התקנה של תלויות</h3>
+        <p>צרו סביבה וירטואלית והתקינו את הספריות הנדרשות.</p>
         <code>pip install -r requirements.txt</code>
       </div>
       <div class="step">
-        <h3>Configure credentials</h3>
-        <p>Copy the example env file and add your Facebook access token and ad account ID.</p>
+        <h3>הגדרת אישורים</h3>
+        <p>העתיקו את קובץ הדוגמה והוסיפו את ה-Access Token ומזהה חשבון המודעות.</p>
         <code>cp .env.example .env</code>
       </div>
       <div class="step">
-        <h3>Launch the dashboard</h3>
-        <p>Open the app at <span style="color:var(--text)">localhost:8501</span> and toggle demo data on first run.</p>
+        <h3>הרצת הדשבורד</h3>
+        <p>פתחו את האפליקציה בכתובת <span style="color:var(--text)">localhost:8501</span> והפעילו את מצב ההדגמה.</p>
         <code>streamlit run app.py</code>
       </div>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<section>
   <div class="container">
     <div class="cta-block">
-      <h2>Ready to see your ads more clearly?</h2>
-      <p>Run the dashboard locally with demo data — no Facebook account required.</p>
+      <h2>מוכנים לראות את הקמפיינים שלכם בבהירות?</h2>
+      <p>הריצו את הדשבורד מקומית עם נתוני דמו — בלי שום צורך בחשבון פייסבוק.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="https://github.com/snginfodesk-commits/Landing-page">View on GitHub</a>
-        <a class="btn btn-secondary" href="fb_ads_report.html">Browse Sample Report</a>
+        <a class="btn btn-primary" href="https://github.com/snginfodesk-commits/Landing-page">צפייה ב-GitHub</a>
+        <a class="btn btn-secondary" href="fb_ads_report.html">לדוח לדוגמה</a>
       </div>
     </div>
   </div>
@@ -444,7 +528,7 @@
 
 <footer>
   <div class="container">
-    Built with Streamlit, Plotly, and the Facebook Marketing API.
+    נבנה עם Streamlit, Plotly ו-Facebook Marketing API.
   </div>
 </footer>
 
