@@ -3,131 +3,534 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דשבורד קמפיינים - פייסבוק</title>
+<title>דשבורד אופטימיזציה לפייסבוק אדס - החלטות חכמות יותר לקמפיינים</title>
+<meta name="description" content="דשבורד אינטראקטיבי שמתחבר ל-Facebook Marketing API, מריץ בדיקות תקינות אוטומטיות והופך נתוני קמפיינים לפעולות אופטימיזציה ברורות.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#e6e6e6;padding:20px;min-height:100vh;line-height:1.6}
-h1{font-size:24px;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{text-align:center;color:#9ca3af;margin-bottom:28px;font-size:13px}
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:30px}
-.kpi{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 12px;text-align:center;transition:transform .2s}
-.kpi:hover{transform:translateY(-3px)}
-.kpi .label{color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px}
-.kpi .value{font-size:24px;font-weight:800;margin-top:4px;background:linear-gradient(135deg,#636EFA,#00CC96);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-h2{font-size:17px;margin:24px 0 12px;color:#636EFA;border-bottom:2px solid rgba(99,110,250,0.3);padding-bottom:6px}
-.table-wrap{overflow-x:auto;border-radius:12px;margin-bottom:18px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
-table{width:100%;border-collapse:collapse;background:rgba(26,28,35,0.95);font-size:13px;white-space:nowrap}
-th{background:linear-gradient(135deg,#1e1e2e,#2d2f36);padding:11px 16px;text-align:right;font-weight:700;color:#a5b4fc;border-bottom:2px solid #636EFA;position:sticky;top:0}
-td{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.06);text-align:right}
-tr:hover td{background:rgba(99,110,250,0.08)}
-tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-.badge-healthy{background:rgba(0,204,150,0.15);color:#00CC96;border:1px solid rgba(0,204,150,0.3)}
-.badge-fatigue{background:rgba(239,85,59,0.15);color:#EF553B;border:1px solid rgba(239,85,59,0.3)}
-.badge-bounce{background:rgba(255,193,7,0.15);color:#FFC107;border:1px solid rgba(255,193,7,0.3)}
-.badge-scale{background:rgba(0,204,150,0.25);color:#00ffba;border:1px solid rgba(0,255,186,0.4)}
-.good{color:#00CC96;font-weight:700}
-.bad{color:#EF553B;font-weight:700}
-.mid{color:#FFC107;font-weight:700}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:900px){.two-col{grid-template-columns:1fr}}
-.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px;margin-bottom:14px}
-.card h3{font-size:15px;margin-bottom:10px}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;padding:12px;background:rgba(255,255,255,0.04);border-radius:10px;font-size:12px}
-.legend-item{display:flex;align-items:center;gap:6px}
-.bar{height:8px;border-radius:4px;display:inline-block;vertical-align:middle}
-.bar-spend{background:linear-gradient(90deg,#636EFA,#a78bfa)}
-.bar-cpl{background:linear-gradient(90deg,#00CC96,#00ffba)}
-.action-box{background:rgba(239,85,59,0.08);border:1px solid rgba(239,85,59,0.2);border-radius:10px;padding:14px;margin:8px 0;font-size:13px}
-.action-box.good-box{background:rgba(0,204,150,0.08);border-color:rgba(0,204,150,0.2)}
+  :root {
+    --bg: #0f1117;
+    --bg-soft: #14161d;
+    --card: #1a1c23;
+    --border: #2d2f36;
+    --text: #e6e6e6;
+    --muted: #9ca3af;
+    --accent: #636EFA;
+    --accent-2: #8b94ff;
+    --red: #EF553B;
+    --green: #00CC96;
+    --amber: #f5b54a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Heebo', 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-align: right;
+  }
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { color: var(--accent); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(15, 17, 23, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .brand {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+  }
+  .brand .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .nav-links a {
+    margin-right: 24px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .nav-links a:first-child { margin-right: 0; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    padding: 96px 0 80px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at top, rgba(99,110,250,0.18), transparent 60%),
+      var(--bg);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--accent-2);
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 52px;
+    line-height: 1.2;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--accent), #00CC96);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lede {
+    font-size: 20px;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+  }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.08s ease, background 0.15s ease;
+    font-family: inherit;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent-2); color: #fff; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent-2); }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+    max-width: 880px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent-2);
+    line-height: 1.2;
+  }
+  .stat .lbl {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  section.alt { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .section-sub {
+    color: var(--muted);
+    margin-bottom: 40px;
+    font-size: 17px;
+    max-width: 640px;
+  }
+
+  /* Features */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .feature:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .feature .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(99,110,250,0.15);
+    color: var(--accent-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .feature h3 { font-size: 18px; margin-bottom: 8px; }
+  .feature p { color: var(--muted); font-size: 15px; }
+
+  /* Health flags table */
+  .flags-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 15px;
+  }
+  .flags-table th {
+    background: #22242b;
+    padding: 14px 16px;
+    text-align: right;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+  }
+  .flags-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .flags-table tr:last-child td { border-bottom: none; }
+  .flag-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flag-red { background: rgba(239,85,59,0.15); color: var(--red); }
+  .flag-amber { background: rgba(245,181,74,0.15); color: var(--amber); }
+  .flag-blue { background: rgba(99,110,250,0.18); color: var(--accent-2); }
+  .flag-green { background: rgba(0,204,150,0.15); color: var(--green); }
+  .table-wrap { overflow-x: auto; }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    counter-reset: step;
+  }
+  @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px 24px;
+    position: relative;
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    top: -14px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .step h3 { margin: 8px 0; font-size: 18px; }
+  .step p { color: var(--muted); font-size: 15px; }
+  .step code {
+    display: block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--green);
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    font-family: 'Menlo', 'Consolas', monospace;
+  }
+
+  /* Quote */
+  .quote {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 28px 32px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .quote p {
+    font-size: 19px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .quote .who { color: var(--muted); font-size: 14px; }
+
+  /* CTA */
+  .cta-block {
+    background: linear-gradient(135deg, rgba(99,110,250,0.15), rgba(0,204,150,0.10));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 56px 32px;
+    text-align: center;
+  }
+  .cta-block h2 { margin-bottom: 12px; }
+  .cta-block p { color: var(--muted); margin-bottom: 28px; font-size: 17px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 36px; }
+    .lede { font-size: 17px; }
+    .nav-links a { margin-right: 14px; font-size: 13px; }
+    .hero { padding: 64px 0 56px; }
+    section { padding: 56px 0; }
+    h2 { font-size: 26px; }
+  }
 </style>
 </head>
 <body>
 
-<h1>דשבורד ביצועי קמפיינים</h1>
-<p class="subtitle">7 ימים אחרונים · יעד עלות לליד: $50</p>
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span>Ads Optimizer</div>
+    <div class="nav-links">
+      <a href="#features">יכולות</a>
+      <a href="#flags">בדיקות תקינות</a>
+      <a href="#start">התחלה מהירה</a>
+    </div>
+  </div>
+</nav>
 
-<div class="kpi-row">
-<div class="kpi"><div class="label">הוצאה</div><div class="value">$10,724</div></div>
-<div class="kpi"><div class="label">לידים</div><div class="value">431</div></div>
-<div class="kpi"><div class="label">עלות לליד</div><div class="value">$24.88</div></div>
-<div class="kpi"><div class="label">אחוז המרה</div><div class="value">4.1%</div></div>
-</div>
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">Facebook Marketing API · Streamlit</span>
+    <h1>תפסיקו לנחש. <span class="grad">תקבלו החלטות חכמות לקמפיינים.</span></h1>
+    <p class="lede">
+      דשבורד אינטראקטיבי ששולף את נתוני הקמפיינים שלכם, מריץ בדיקות תקינות אוטומטיות,
+      ומציג בדיוק אילו מודעות לעצור, לסקייל או לרענן — בעברית פשוטה.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#start">בואו נתחיל</a>
+      <a class="btn btn-secondary" href="fb_ads_report.html">צפו בדוח לדוגמה</a>
+    </div>
 
-<h2>ביצועי קמפיינים</h2>
-<div class="table-wrap">
-<table>
-<tr><th>קמפיין</th><th>קבוצה</th><th>הוצאה</th><th>לידים</th><th>עלות לליד</th><th>תדירות</th><th>המרה</th><th>מה לעשות</th></tr>
-<tr><td>Lead Gen - Ebook</td><td>Digital Agencies</td><td>$718</td><td class="good">83</td><td class="good">$8.65</td><td>1.84</td><td class="good">10.35%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
-<tr><td>Retargeting</td><td>7-day visitors</td><td>$659</td><td class="good">61</td><td class="good">$10.80</td><td>1.94</td><td class="good">12.06%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Lookalike 1%</td><td>$549</td><td>38</td><td class="good">$14.43</td><td>2.26</td><td>7.57%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lead Gen - Ebook</td><td>Content Marketers</td><td>$590</td><td>39</td><td class="good">$15.12</td><td>2.16</td><td>9.44%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 55%</span></td></tr>
-<tr><td>Lead Gen - Ebook</td><td>CMOs</td><td>$687</td><td>44</td><td class="good">$15.60</td><td class="good">1.30</td><td>9.40%</td><td><span class="badge badge-scale">⬆ להגדיל תקציב</span></td></tr>
-<tr><td>Lookalike</td><td>LAL 2% - US</td><td>$544</td><td>28</td><td class="good">$19.44</td><td>2.08</td><td>5.48%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Retargeting</td><td>Email list</td><td>$522</td><td>26</td><td>$20.08</td><td>1.88</td><td>10.79%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 48%</span></td></tr>
-<tr><td>Retargeting</td><td>30-day visitors</td><td>$473</td><td>23</td><td>$20.58</td><td class="bad">2.66</td><td>9.20%</td><td><span class="badge badge-bounce">⚠ צפייה בדף 54%</span></td></tr>
-<tr><td>Lookalike</td><td>LAL 1% - US</td><td>$713</td><td>31</td><td>$23.00</td><td>1.98</td><td>5.61%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Interest Marketing</td><td>$519</td><td>20</td><td>$25.96</td><td class="mid">2.46</td><td>6.41%</td><td><span class="badge badge-healthy">✅ תקין</span></td></tr>
-<tr><td>Lookalike</td><td>LAL 1% - CA</td><td>$597</td><td>16</td><td class="mid">$37.29</td><td class="mid">2.48</td><td>5.23%</td><td><span class="badge badge-bounce">⚠ קרוב ליעד</span></td></tr>
-<tr><td>Lead Gen - Webinar</td><td>Lookalike 3%</td><td>$501</td><td>12</td><td class="mid">$41.74</td><td class="bad">2.53</td><td>5.66%</td><td><span class="badge badge-fatigue">🔴 עייפות + נטישה</span></td></tr>
-<tr style="opacity:0.5"><td>Broad - Tech</td><td>Startup Founders</td><td>$731</td><td class="bad">5</td><td class="bad">$146.15</td><td>2.33</td><td>1.38%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
-<tr style="opacity:0.5"><td>Broad - Tech</td><td>SaaS Buyers</td><td>$725</td><td class="bad">3</td><td class="bad">$241.77</td><td>1.96</td><td>0.92%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
-<tr style="opacity:0.5"><td>Broad - Tech</td><td>Tech Enthusiasts</td><td>$400</td><td class="bad">1</td><td class="bad">$399.70</td><td>2.01</td><td>0.54%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
-<tr style="opacity:0.5"><td>Brand Awareness</td><td>35-54 Females</td><td>$626</td><td class="bad">1</td><td class="bad">$625.78</td><td>2.40</td><td>0.38%</td><td><span class="badge badge-fatigue">⏸ להשהות</span></td></tr>
-</table>
-</div>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">4</div>
+        <div class="lbl">בדיקות תקינות מובנות</div>
+      </div>
+      <div class="stat">
+        <div class="num">7-30</div>
+        <div class="lbl">ימים של נתונים בלחיצה</div>
+      </div>
+      <div class="stat">
+        <div class="num">100%</div>
+        <div class="lbl">קוד פתוח, ריצה מקומית</div>
+      </div>
+      <div class="stat">
+        <div class="num">0</div>
+        <div class="lbl">עלות שימוש</div>
+      </div>
+    </div>
+  </div>
+</header>
 
-<div class="legend">
-<div class="legend-item"><span class="badge badge-scale">⬆</span> להגדיל תקציב</div>
-<div class="legend-item"><span class="badge badge-healthy">✅</span> תקין</div>
-<div class="legend-item"><span class="badge badge-bounce">⚠</span> דורש תשומת לב</div>
-<div class="legend-item"><span class="badge badge-fatigue">🔴</span> בעייתי</div>
-<div class="legend-item"><span class="badge badge-fatigue">⏸</span> להשהות מיד</div>
-</div>
+<section id="features">
+  <div class="container">
+    <h2>כל מה שצריך כדי לפעול לפי הנתונים</h2>
+    <p class="section-sub">מנתונים גולמיים של ה-API ועד רשימת פעולות ברורה לביצוע.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">API</div>
+        <h3>חיבור ישיר לפייסבוק</h3>
+        <p>חיבור לחשבון המודעות שלכם ושליפה אוטומטית של מדדי קמפיינים וקבוצות מודעות לחלון של 7, 14 או 30 יום ישירות מ-Facebook Marketing API.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">AI</div>
+        <h3>טבלת ניתוח חכמה</h3>
+        <p>בדיקות תקינות אוטומטיות שמסמנות שחיקת קריאייטיב, נזילות במשפך, בעיות המרה והזדמנויות לסקיילינג — הכל במבט אחד.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">+</div>
+        <h3>תובנות למנהלים</h3>
+        <p>גלו אילו מודעות לעצור, מי הקהלים הכי רווחיים, ומה המגמה של עלות לליד מול הוצאה — בלי לבנות אף טבלת ציר.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">CSV</div>
+        <h3>ייצוא בלחיצה</h3>
+        <p>הורידו את תוצאות בדיקות התקינות והנתונים היומיים כקובץ CSV לדוחות, שיתוף ישיר או ניתוח נוסף.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">DEMO</div>
+        <h3>מצב הדגמה</h3>
+        <p>חוו את הדשבורד המלא עם נתוני דמו ריאליסטיים — לפני שתצטרכו לחבר אפילו מפתח אחד של API.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">$</div>
+        <h3>יעד עלות לליד</h3>
+        <p>הגדירו את ה-CPL היעד שלכם, והדשבורד יזהה לכם את קבוצות המודעות שמוכנות לסקייל בלחיצה.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<h2>מה לעשות עכשיו</h2>
-<div class="two-col">
-<div>
-<div class="action-box">
-<strong>🛑 להשהות מיד (4 קבוצות):</strong><br>
-• Brand Awareness → 35-54 Females — <span class="bad">$625 לליד</span><br>
-• Broad Tech → Tech Enthusiasts — <span class="bad">$399 לליד</span><br>
-• Broad Tech → SaaS Buyers — <span class="bad">$241 לליד</span><br>
-• Broad Tech → Startup Founders — <span class="bad">$146 לליד</span><br>
-<small style="color:#9ca3af">ארבעתם מבזבזות $2,481 על 10 לידים בלבד (עלות ממוצעת $248 לליד)</small>
-</div>
-<div class="action-box" style="background:rgba(255,193,7,0.08);border-color:rgba(255,193,7,0.2)">
-<strong>⚠️ לטפל (3 קבוצות):</strong><br>
-• Webinar Lookalike 3% — תדירות 2.53 + נטישה 53% → <strong>לרענן קריאטיב</strong><br>
-• Retargeting 30-day — תדירות 2.66 → <strong>לצמצם קהל</strong><br>
-• Lookalike CA — $37 לליד, קרוב ליעד → <strong>לעקוב</strong>
-</div>
-</div>
-<div>
-<div class="action-box good-box">
-<strong>🚀 להגדיל תקציב (3 קבוצות):</strong><br>
-• Ebook → Digital Agencies — <span class="good">$8.65 לליד</span> + המרה 10.35%<br>
-• Retargeting → 7-day visitors — <span class="good">$10.80 לליד</span> + המרה 12.06%<br>
-• Ebook → CMOs — <span class="good">$15.60 לליד</span> + תדירות 1.30<br>
-<small style="color:#9ca3af">שלושתם מייצרות 188 לידים בעלות ממוצעת $10.96 לליד</small>
-</div>
-<div class="action-box good-box">
-<strong>📊 סיכום שבועי:</strong><br>
-<table style="font-size:12px;background:transparent;margin-top:8px">
-<tr><th>תאריך</th><th>הוצאה</th><th>עלות לליד</th><th></th></tr>
-<tr><td>10/04</td><td>$1,584</td><td>$25.95</td><td><span class="bar bar-cpl" style="width:52%"></span></td></tr>
-<tr><td>11/04</td><td>$1,405</td><td>$28.04</td><td><span class="bar bar-cpl" style="width:44%"></span></td></tr>
-<tr><td>12/04</td><td>$1,434</td><td>$34.91</td><td><span class="bar bar-cpl" style="width:30%"></span></td></tr>
-<tr><td>13/04</td><td>$1,645</td><td>$20.88</td><td><span class="bar bar-cpl" style="width:58%"></span></td></tr>
-<tr><td>14/04</td><td>$1,758</td><td>$20.37</td><td><span class="bar bar-cpl" style="width:60%"></span></td></tr>
-<tr><td>15/04</td><td>$1,579</td><td>$30.92</td><td><span class="bar bar-cpl" style="width:38%"></span></td></tr>
-<tr><td>16/04</td><td>$1,319</td><td>$20.24</td><td><span class="bar bar-cpl" style="width:60%"></span></td></tr>
-</table>
-</div>
-</div>
-</div>
+<section id="flags" class="alt">
+  <div class="container">
+    <h2>בדיקות תקינות מובנות</h2>
+    <p class="section-sub">כל קבוצת מודעות מקבלת ציון אוטומטי מול ארבעה כללי אבחון — כך אתם מבלים פחות זמן באקסל.</p>
+    <div class="table-wrap">
+      <table class="flags-table">
+        <thead>
+          <tr>
+            <th>סטטוס</th>
+            <th>נקבע כש...</th>
+            <th>פעולה מומלצת</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="flag-pill flag-red">שחיקה גבוהה</span></td>
+            <td>תדירות מעל 2.5 ו-CTR נמוך מהממוצע</td>
+            <td>רענון קריאייטיב, בדיקת זוויות חדשות</td>
+          </tr>
+          <tr>
+            <td><span class="flag-pill flag-amber">בעיית טעינה / נטישה</span></td>
+            <td>שיעור צפייה בדף נחיתה מתחת ל-60% מההקלקות</td>
+            <td>בדיקת מהירות הדף וחוויית מובייל</td>
+          </tr>
+          <tr>
+            <td><span class="flag-pill flag-blue">פער דף נחיתה / הצעה</span></td>
+            <td>CTR מעל 1.2% אך שיעור המרה מתחת ל-5%</td>
+            <td>התאמת דף הנחיתה למסר שבמודעה</td>
+          </tr>
+          <tr>
+            <td><span class="flag-pill flag-green">מוכן לסקייל</span></td>
+            <td>CPL נמוך ב-20%+ מהיעד ותדירות מתחת ל-1.5</td>
+            <td>הגדלה הדרגתית של תקציב</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-<p style="text-align:center;color:#6b7280;font-size:11px;margin-top:24px">נתוני דמו · גרסה אינטראקטיבית: <code>streamlit run app.py</code></p>
+<section>
+  <div class="container">
+    <div class="quote">
+      <p>"מנהלי קמפיינים מבזבזים שעות על ייצוא נתונים מ-Ads Manager ובניית טבלאות אקסל. הדשבורד הזה הופך את כל התהליך לתשובה אחת ברורה: מה עושים עכשיו."</p>
+      <span class="who">— מהפילוסופיה של הפרויקט</span>
+    </div>
+  </div>
+</section>
+
+<section id="start" class="alt">
+  <div class="container">
+    <h2>למעלה ורצים בשלושה שלבים</h2>
+    <p class="section-sub">הדרישה היחידה היא Python 3.9+. מצב ההדגמה עובד בלי שום אישורי API.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>התקנה של תלויות</h3>
+        <p>צרו סביבה וירטואלית והתקינו את הספריות הנדרשות.</p>
+        <code>pip install -r requirements.txt</code>
+      </div>
+      <div class="step">
+        <h3>הגדרת אישורים</h3>
+        <p>העתיקו את קובץ הדוגמה והוסיפו את ה-Access Token ומזהה חשבון המודעות.</p>
+        <code>cp .env.example .env</code>
+      </div>
+      <div class="step">
+        <h3>הרצת הדשבורד</h3>
+        <p>פתחו את האפליקציה בכתובת <span style="color:var(--text)">localhost:8501</span> והפעילו את מצב ההדגמה.</p>
+        <code>streamlit run app.py</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-block">
+      <h2>מוכנים לראות את הקמפיינים שלכם בבהירות?</h2>
+      <p>הריצו את הדשבורד מקומית עם נתוני דמו — בלי שום צורך בחשבון פייסבוק.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/snginfodesk-commits/Landing-page">צפייה ב-GitHub</a>
+        <a class="btn btn-secondary" href="fb_ads_report.html">לדוח לדוגמה</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    נבנה עם Streamlit, Plotly ו-Facebook Marketing API.
+  </div>
+</footer>
 
 </body>
 </html>
