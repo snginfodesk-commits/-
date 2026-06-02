@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>וובינר חשיפה: הפרטים המספריים והפוטנציאל של הפריסייל | 16.6 בשעה 20:30</title>
-<meta name="description" content="הרשמה לוובינר חינמי שבו נחשוף את הפרטים המספריים ואת פוטנציאל ההשקעה של הפריסייל. יום שלישי 16.6 בשעה 20:30. מספר המקומות מוגבל.">
+<title>וובינר חשיפה: פריסייל בתנאים שאסור לפספס | 16.6 בשעה 20:30</title>
+<meta name="description" content="הרשמה לוובינר חינמי שבו נחשוף את הפרויקט, המספרים והיזם. דירות פריסייל להשקעה או למגורים החל מ-450 אלף הון עצמי. יום שלישי 16.6 בשעה 20:30.">
 <!-- OpenGraph (לשיתוף בוואטסאפ / פייסבוק) -->
-<meta property="og:title" content="וובינר חשיפה: הפרטים המספריים והפוטנציאל של הפריסייל">
-<meta property="og:description" content="16.6 בשעה 20:30 · הרשמה חינם · מספר מקומות מוגבל">
+<meta property="og:title" content="חשיפה ראשונה: פריסייל בתנאים שאסור לפספס">
+<meta property="og:description" content="16.6 בשעה 20:30 · החל מ-450 אלף הון עצמי · הרשמה לוובינר">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +74,7 @@
     border: 1px solid rgba(245,181,74,0.35); background: rgba(245,181,74,0.08);
     padding: 7px 16px; border-radius: 999px; margin-bottom: 24px; font-weight: 600;
   }
+  .eyebrow #countdown { font-variant-numeric: tabular-nums; }
   h1 {
     font-size: 50px; line-height: 1.15; font-weight: 900;
     margin-bottom: 18px; letter-spacing: -0.5px; max-width: 860px;
@@ -138,26 +139,6 @@
   .section-head { text-align: center; max-width: 680px; margin: 0 auto 44px; }
   h2 { font-size: 34px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.3px; }
   .section-sub { color: var(--muted); font-size: 17px; }
-
-  /* Value list (מה תקבלו) */
-  .value-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
-    max-width: 860px; margin: 0 auto;
-  }
-  @media (max-width: 700px) { .value-grid { grid-template-columns: 1fr; } }
-  .value-item {
-    display: flex; gap: 14px; align-items: flex-start;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 22px;
-  }
-  .value-item .check {
-    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-    background: rgba(0,204,150,0.15); color: var(--green);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 800;
-  }
-  .value-item h3 { font-size: 17px; margin-bottom: 4px; }
-  .value-item p { color: var(--muted); font-size: 15px; }
 
   /* For who */
   .audience {
@@ -235,11 +216,10 @@
 <!-- 1. Above the Fold -->
 <header class="hero">
   <div class="container">
-    <span class="eyebrow">⚡ וובינר חינמי · מספר מקומות מוגבל</span>
-    <h1>חשיפה ראשונה: <span class="grad">הפרטים המספריים ופוטנציאל ההשקעה</span> של הפריסייל</h1>
+    <span class="eyebrow">⏳ נותרו <strong id="countdown">09:00</strong> דקות להרשמה לוובינר</span>
+    <h1>חשיפה ראשונה: <span class="grad">פריסייל בתנאים שאסור לפספס</span> החל מ-450 אלף הון עצמי</h1>
     <p class="lede">
-      [כותרת משנה — בשורה אחת: התוצאה הגדולה שהם יקבלו. לדוגמה: "במפגש אחד תקבלו את כל המספרים,
-      ההערכות והתנאים — לפני כולם, לפני שהפריסייל יוצא לאוויר."]
+      דירות פריסייל להשקעה או למגורים בהובלת היזם מהחזקים בישראל. הצטרפו לוובינר ושם נחשוף את הפרויקט, את המספרים ואת היזם!
     </p>
 
     <div class="datetime">
@@ -258,61 +238,21 @@
           <input type="text" id="name" name="name" placeholder="ישראל ישראלי" required>
         </div>
         <div class="field">
-          <label for="email">אימייל</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required>
-        </div>
-        <div class="field">
           <label for="phone">טלפון נייד</label>
           <input type="tel" id="phone" name="phone" placeholder="050-0000000" inputmode="tel" required>
         </div>
-        <button type="submit" class="btn btn-gold">שריינו לי מקום בחינם! ←</button>
+        <div class="field">
+          <label for="email">אימייל</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+        <button type="submit" class="btn btn-gold">שריינו לי מקום בוובינר ←</button>
         <p class="form-note">הפרטיות שלכם חשובה לנו. המידע לא יועבר לצד ג'.</p>
       </form>
     </div>
   </div>
 </header>
 
-<!-- 2. מה תקבלו בוובינר -->
-<section id="value">
-  <div class="container">
-    <div class="section-head">
-      <h2>מה תקבלו בוובינר?</h2>
-      <p class="section-sub">[משפט פתיחה קצר — מה הולך לקרות במפגש]</p>
-    </div>
-    <div class="value-grid">
-      <div class="value-item">
-        <div class="check">✓</div>
-        <div>
-          <h3>[נקודה 1 — תוצאה]</h3>
-          <p>[מה הגולש יֵדע לעשות / יבין אחרי המפגש. התמקדו בתוצאה, לא בתהליך.]</p>
-        </div>
-      </div>
-      <div class="value-item">
-        <div class="check">✓</div>
-        <div>
-          <h3>[נקודה 2 — תוצאה]</h3>
-          <p>[המספרים והנתונים שייחשפו — שווי, פוטנציאל, תנאי הפריסייל.]</p>
-        </div>
-      </div>
-      <div class="value-item">
-        <div class="check">✓</div>
-        <div>
-          <h3>[נקודה 3 — תוצאה]</h3>
-          <p>[איך נכנסים, מתי, ומה התנאים המוקדמים שיהיו זמינים רק למשתתפים.]</p>
-        </div>
-      </div>
-      <div class="value-item">
-        <div class="check">✓</div>
-        <div>
-          <h3>[נקודה 4 — תוצאה]</h3>
-          <p>[בונוס / שאלות ותשובות חיות / חומר בלעדי שיינתן בסוף.]</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3. למי הוובינר מיועד -->
+<!-- 2. למי הוובינר מיועד -->
 <section class="alt">
   <div class="container">
     <div class="section-head">
@@ -328,7 +268,7 @@
   </div>
 </section>
 
-<!-- 4. מי המרצה -->
+<!-- 3. מי המרצה -->
 <section>
   <div class="container">
     <div class="section-head">
@@ -348,7 +288,7 @@
   </div>
 </section>
 
-<!-- 5. Final CTA + טופס נוסף -->
+<!-- 4. Final CTA + טופס נוסף -->
 <section class="alt">
   <div class="container">
     <div class="cta-block">
@@ -363,14 +303,14 @@
             <input type="text" id="name2" name="name" placeholder="ישראל ישראלי" required>
           </div>
           <div class="field">
-            <label for="email2">אימייל</label>
-            <input type="email" id="email2" name="email" placeholder="you@example.com" required>
-          </div>
-          <div class="field">
             <label for="phone2">טלפון נייד</label>
             <input type="tel" id="phone2" name="phone" placeholder="050-0000000" inputmode="tel" required>
           </div>
-          <button type="submit" class="btn btn-gold">שריינו לי מקום בחינם! ←</button>
+          <div class="field">
+            <label for="email2">אימייל</label>
+            <input type="email" id="email2" name="email" placeholder="you@example.com" required>
+          </div>
+          <button type="submit" class="btn btn-gold">שריינו לי מקום בוובינר ←</button>
           <p class="form-note">הפרטיות שלכם חשובה לנו. המידע לא יועבר לצד ג'.</p>
         </form>
       </div>
@@ -386,6 +326,22 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ספירה לאחור של 9 דקות להרשמה (הזמן רץ לאחור).
+  (function () {
+    var el = document.getElementById('countdown');
+    if (!el) return;
+    var remaining = 9 * 60; // 9 דקות בשניות
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      el.textContent = pad(m) + ':' + pad(s);
+      if (remaining > 0) { remaining--; }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 
   // טיפול בטפסי ההרשמה.
   // כרגע: שמירה מקומית + הפניה לדף תודה.
