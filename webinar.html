@@ -51,11 +51,10 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 24px; max-width: 1080px; margin: 0 auto;
   }
-  .brand { display: inline-flex; align-items: stretch; gap: 11px; }
-  .brand-text { display: flex; flex-direction: column; justify-content: space-between; line-height: 1; }
+  .brand { display: inline-flex; align-items: center; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1; }
   .brand-name { font-weight: 800; font-size: 17px; letter-spacing: 0.2px; color: var(--text); }
-  .brand-tag { font-size: 10.5px; letter-spacing: 2px; color: var(--muted); }
-  .brand-mark { height: auto; width: auto; align-self: stretch; color: #fff; flex-shrink: 0; }
+  .brand-tag { font-size: 10.5px; letter-spacing: 2px; color: var(--muted); margin-top: 3px; }
   .nav-cta {
     background: var(--accent); color: #fff; padding: 9px 18px;
     border-radius: 8px; font-size: 14px; font-weight: 600;
@@ -224,13 +223,6 @@
 <nav>
   <div class="nav-inner">
     <a class="brand" href="#register" aria-label="צמד ברזל · יזמות ונדלן">
-      <!-- שחזור של סימן הלוגו (להחלפה בקובץ המקורי: <img src="logo.png" class="brand-mark" alt="צמד ברזל">) -->
-      <svg class="brand-mark" viewBox="20 23 68 74" fill="currentColor" aria-hidden="true">
-        <path d="M57 25 L86 31 L86 95 L62 91 Z"/>
-        <path d="M57 25 L57 44 L41 39 Z"/>
-        <path d="M37 44 L56 47 L56 95 L39 93 Z"/>
-        <path d="M37 44 L37 61 L22 56 Z"/>
-      </svg>
       <span class="brand-text">
         <span class="brand-name">צמד ברזל</span>
         <span class="brand-tag">יזמות ונדלן</span>
