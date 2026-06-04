@@ -156,6 +156,22 @@
   .audience li:last-child { border-bottom: none; }
   .audience li .ic { color: var(--accent-2); font-weight: 800; flex-shrink: 0; }
 
+  /* Perks / deal terms */
+  .perks {
+    max-width: 720px; margin: 0 auto; background: var(--card);
+    border: 1px solid var(--border); border-radius: 14px; padding: 26px 36px;
+  }
+  .perks li {
+    list-style: none; padding: 14px 0; border-bottom: 1px solid var(--border);
+    display: flex; gap: 14px; align-items: flex-start; font-size: 17px;
+  }
+  .perks li:last-child { border-bottom: none; }
+  .perks li .ic { color: var(--green); font-weight: 800; flex-shrink: 0; font-size: 18px; }
+  .perks-close {
+    text-align: center; max-width: 680px; margin: 26px auto 0;
+    font-size: 18px; color: var(--text); font-weight: 600; line-height: 1.6;
+  }
+
   /* Speaker */
   .speaker {
     display: flex; gap: 32px; align-items: center; max-width: 820px;
@@ -222,7 +238,7 @@
   <div class="container">
     <span class="eyebrow">⏳ נותרו <strong id="countdown">09:00</strong> דקות להרשמה לוובינר</span>
     <h1>חשיפה ראשונה: <span class="grad">פריסייל בתנאים שאסור לפספס</span></h1>
-    <p class="hero-small">החל מ-450 אלף הון עצמי</p>
+    <p class="hero-small">רק 450,000₪ הון עצמי</p>
     <p class="lede">
       דירות פריסייל להשקעה או למגורים בהובלת היזם מהחזקים בישראל. הצטרפו לוובינר ושם נחשוף את הפרויקט, את המספרים ואת היזם!
     </p>
@@ -257,7 +273,23 @@
   </div>
 </header>
 
-<!-- 2. למי הוובינר מיועד -->
+<!-- 2. הזדמנויות / תנאי הפריסייל -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <h2>הזדמנויות כאלה לא מפספסים</h2>
+    </div>
+    <ul class="perks">
+      <li><span class="ic">✓</span><span>המיקום הכי מתפתח ביהוד.</span></li>
+      <li><span class="ic">✓</span><span>7% מתחת למחיר הפרסום שיֵצא עוד כמה חודשים.</span></li>
+      <li><span class="ic">✓</span><span>פטור מהמדד ומשכר טרחת עו"ד וקבלן.</span></li>
+      <li><span class="ic">✓</span><span>ועוד תנאים מטורפים למשקיעים.</span></li>
+    </ul>
+    <p class="perks-close">הרשמו לוובינר שבו נחשוף את שאר התנאים ואת הפוטנציאל המטורף שיש באזור ההשקעה בפריסייל ביהוד.</p>
+  </div>
+</section>
+
+<!-- 3. למי הוובינר מיועד -->
 <section class="alt">
   <div class="container">
     <div class="section-head">
@@ -362,13 +394,7 @@
       };
       try { localStorage.setItem('webinar_lead', JSON.stringify(data)); } catch (err) {}
 
-      // TODO: שליחת הליד ל-Webhook אמיתי לפני ההפניה, לדוגמה:
-      // fetch('https://hook.eu1.make.com/XXXX', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(data)
-      // }).finally(redirect);
-
+      // TODO: שליחת הליד ל-Webhook אמיתי לפני ההפניה.
       window.location.href = form.getAttribute('data-redirect');
     });
   });
