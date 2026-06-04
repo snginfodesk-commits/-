@@ -281,7 +281,7 @@
     </div>
     <ul class="perks">
       <li><span class="ic">✓</span><span>המיקום הכי מתפתח ביהוד.</span></li>
-      <li><span class="ic">✓</span><span>7% מתחת למחיר הפרסום שיֵצא עוד כמה חודשים.</span></li>
+      <li><span class="ic">✓</span><span>7% מתחת למחיר הפרסום שיצא עוד כמה חודשים.</span></li>
       <li><span class="ic">✓</span><span>פטור מהמדד ומשכר טרחת עו"ד וקבלן.</span></li>
       <li><span class="ic">✓</span><span>ועוד תנאים מטורפים למשקיעים.</span></li>
     </ul>
@@ -380,9 +380,6 @@
     setInterval(tick, 1000);
   })();
 
-  // טיפול בטפסי ההרשמה.
-  // כרגע: שמירה מקומית + הפניה לדף תודה.
-  // להחלפה: חברו ל-Make / Zapier / Google Sheets / מערכת דיוור.
   document.querySelectorAll('.reg-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -393,7 +390,6 @@
         ts: new Date().toISOString()
       };
       try { localStorage.setItem('webinar_lead', JSON.stringify(data)); } catch (err) {}
-
       window.location.href = form.getAttribute('data-redirect');
     });
   });
