@@ -90,7 +90,10 @@ h2{font-size:14px;font-weight:700;margin:6px 2px 0;color:var(--muted);letter-spa
 .sec-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .sec-h b{display:flex;align-items:center;gap:8px;font-size:16px}
 .crow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
-.crow .nm{flex:1;min-width:0;border:0;background:none;text-align:start;padding:6px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cn{flex:1;min-width:0;display:flex;flex-direction:column}
+.cs small{color:var(--muted);font-size:12.5px;display:block}
+.cs .bar{height:5px;margin:3px 0 5px}
+.crow .nm{width:100%;min-width:0;border:0;background:none;text-align:start;padding:4px 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .crow .nm:hover{color:var(--gold)}
 input,select{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
 .crow input{width:104px;text-align:left;direction:ltr;font-family:var(--font-num)}
@@ -295,11 +298,15 @@ function planBox(){const p=planTotals();
   '<div class="kv"><span>רזרבה לבלתי צפוי (בצ״מ) <input id="reserve" type="number" min="0" max="100" inputmode="numeric" value="'+esc(S.reserve)+'" aria-label="אחוז בצ״מ"> %</span>'+fmt(p.expR-p.exp)+'</div>'+
   '<div class="kv strong"><span>תזרים חודשי צפוי</span>'+fmt(p.flow,p.flow<0?'neg':'')+'</div><div class="kv"><span>השקעות קבועות</span>'+fmt(p.inv)+'</div>'+
   '<div class="kv strong"><span>פנוי להשקעה</span>'+fmt(p.free,p.free<0?'neg':'')+'</div><div class="kv"><span>חיסכון שנתי צפוי</span>'+fmt(p.flow*12)+'</div>'}
-function vBudget(){const p=planTotals();let h='<div class="card" id="planbox">'+planBox()+'</div>';
-  for(const g of G){h+='<div class="card" style="--c:var(--g-'+g[0]+')"><div class="sec-h"><b><i class="dot"></i>'+g[1]+'</b><span id="gt-'+g[0]+'">'+fmt(p[g[0]])+'</span></div><small style="color:var(--muted)">'+g[2]+' · סכום חודשי מתוכנן</small>';
-    for(const c of S.cats.filter(c=>c.g===g[0]))h+='<div class="crow"><button class="nm" data-cat="'+c.id+'" title="עריכת קטגוריה">'+esc(c.name)+'</button><input type="number" min="0" inputmode="decimal" placeholder="0" id="p-'+c.id+'" data-plan="'+c.id+'" value="'+(num(c.plan)||'')+'" aria-label="מתוכנן חודשי: '+esc(c.name)+'"></div>';
+function catStat(c,act){const pl=num(c.plan);if(!act&&!pl)return '';const inc=c.g==='inc',over=!inc&&pl>0&&act>pl;
+  const txt=inc?'התקבל '+fmt(act)+(pl?' מתוך '+fmt(pl):''):'בפועל '+fmt(act)+(pl?(over?' · <span class="over-t">חריגה של '+fmt(act-pl)+'</span>':' · נשארו '+fmt(pl-act)):'');
+  return '<small>'+txt+'</small>'+(pl?'<div class="bar'+(over?' over':'')+'"><i style="width:'+Math.min(100,act/pl*100)+'%"></i></div>':'')}
+function grpStat(g,t){return (g==='inc'?'התקבל ב':'בפועל ב')+MON[+ym.slice(5)-1]+': '+fmt(t[g])}
+function vBudget(){const p=planTotals(),t=monthTotals(ym);let h='<div class="card" id="planbox">'+planBox()+'</div>';
+  for(const g of G){h+='<div class="card" style="--c:var(--g-'+g[0]+')"><div class="sec-h"><b><i class="dot"></i>'+g[1]+'</b><span id="gt-'+g[0]+'">'+fmt(p[g[0]])+'</span></div><small style="color:var(--muted)">'+g[2]+' · מתוכנן לחודש · <span id="ga-'+g[0]+'">'+grpStat(g[0],t)+'</span></small>';
+    for(const c of S.cats.filter(c=>c.g===g[0]))h+='<div class="crow"><div class="cn"><button class="nm" data-cat="'+c.id+'" title="עריכת קטגוריה">'+esc(c.name)+'</button><div class="cs" id="cs-'+c.id+'">'+catStat(c,t.byCat[c.id]||0)+'</div></div><input type="number" min="0" inputmode="decimal" placeholder="0" id="p-'+c.id+'" data-plan="'+c.id+'" value="'+(num(c.plan)||'')+'" aria-label="מתוכנן חודשי: '+esc(c.name)+'"></div>';
     h+='<button class="link" data-newcat="'+g[0]+'">+ קטגוריה חדשה</button></div>'}
-  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">הוצאה שנתית (נופש, ביטוח)? מחלקים ב-12 ומזינים כסכום חודשי. לחיצה על שם קטגוריה מאפשרת לשנות או למחוק אותה.</p>'}
+  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">הוצאה שנתית (נופש, ביטוח)? מחלקים ב-12 ומזינים כסכום חודשי. לחיצה על שם קטגוריה מאפשרת לשנות או למחוק אותה. הסכומים "בפועל" מגיעים מהתנועות של החודש שנבחר למעלה.</p>'}
 function vYear(){const T=[];for(let m=1;m<=12;m++)T.push(monthTotals(year+'-'+pad(m)));
   const mx=Math.max(1,...T.map(t=>Math.max(t.inc,t.exp)));const active=Math.max(1,T.filter(t=>t.inc+t.exp+t.inv>0).length);
   let h='<div class="card"><div class="legend"><span><span><i class="dot" style="--c:var(--g-want)"></i> הכנסות</span>&nbsp;&nbsp;<span><i class="dot" style="--c:var(--g-must)"></i> הוצאות</span></span><span>הגבוה ביותר: '+fmt(mx>1?mx:0)+'</span></div>'+
@@ -318,7 +325,6 @@ function vYear(){const T=[];for(let m=1;m<=12;m++)T.push(monthTotals(year+'-'+pa
   return h+'</tbody></table></div><p style="color:var(--muted);font-size:13px;margin:0 2px">הממוצע מחושב לפי '+active+' חודשים עם נתונים. פער ירוק: עומדים בתכנון. אדום: חריגה, או הכנסה נמוכה מהמתוכנן.</p>'}
 function render(){
   $('period').textContent=view==='year'?year:MON[+ym.slice(5)-1]+' '+ym.slice(0,4);
-  document.querySelector('.switch').hidden=view==='budget';
   $('view').innerHTML=({home:vHome,tx:vTx,budget:vBudget,year:vYear})[view]();
   document.querySelectorAll('.nav a').forEach(a=>a.dataset.v===view?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'))}
 
@@ -371,7 +377,7 @@ document.addEventListener('click',ev=>{const t=ev.target.closest('button,a');if(
 let deb;
 document.addEventListener('input',ev=>{const t=ev.target;
   if(t.dataset.plan){const c=catById(t.dataset.plan);if(!c)return;c.plan=Math.max(0,num(t.value));const p=planTotals();
-    $('gt-'+c.g).innerHTML=fmt(p[c.g]);const r=document.activeElement;$('planbox').innerHTML=planBox();if(r&&r.id&&$(r.id))$(r.id).focus();
+    $('gt-'+c.g).innerHTML=fmt(p[c.g]);$('cs-'+c.id).innerHTML=catStat(c,monthTotals(ym).byCat[c.id]||0);const r=document.activeElement;$('planbox').innerHTML=planBox();if(r&&r.id&&$(r.id))$(r.id).focus();
     clearTimeout(deb);deb=setTimeout(saveMeta,600)}
 });
 document.addEventListener('change',ev=>{if(ev.target.id==='reserve'){S.reserve=Math.min(100,Math.max(0,num(ev.target.value)));$('planbox').innerHTML=planBox();saveMeta()}});
