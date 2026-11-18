@@ -86,6 +86,13 @@ h2{font-size:14px;font-weight:700;margin:6px 2px 0;color:var(--muted);letter-spa
 .kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
 .kv:last-child{border-bottom:0}
 .kv.strong{font-weight:700}
+.kv3{display:grid;grid-template-columns:minmax(0,1fr) 84px 84px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.kv3>span:not(:first-child){text-align:left}
+.kv3.strong{font-weight:700}
+.kv3.hd{color:var(--muted);font-size:12.5px;padding-top:0}
+.kv3 input{width:56px;text-align:center;padding:5px 6px}
+#planbox .kv3:last-of-type{border-bottom:0}
+.hint{margin:10px 0 0;font-size:13px;color:var(--muted);background:var(--gold-soft);border-radius:10px;padding:9px 11px;color:var(--ink)}
 .kv input{width:64px;text-align:center}
 .sec-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .sec-h b{display:flex;align-items:center;gap:8px;font-size:16px}
@@ -293,11 +300,13 @@ function vTx(){let items=(S.tx[ym]||[]).slice().sort((a,b)=>b.d.localeCompare(a.
   let last='',sum=0;h+='<div class="card list">';
   for(const x of items){if(x.d!==last){last=x.d;const d=x.d.split('-');h+='<div class="day">'+(+d[2])+' ב'+MON[+d[1]-1]+'</div>'}h+=txRow(x);sum+=x.a}
   return h+'</div>'+(filter==='all'?'':'<div class="card"><div class="kv strong"><span>סה״כ '+GN[filter]+' ('+items.length+')</span>'+fmt(sum)+'</div></div>')}
-function planBox(){const p=planTotals();
-  return '<div class="kv"><span>הכנסות מתוכננות</span>'+fmt(p.inc)+'</div><div class="kv"><span>הוצאות מתוכננות</span>'+fmt(p.exp)+'</div>'+
-  '<div class="kv"><span>רזרבה לבלתי צפוי (בצ״מ) <input id="reserve" type="number" min="0" max="100" inputmode="numeric" value="'+esc(S.reserve)+'" aria-label="אחוז בצ״מ"> %</span>'+fmt(p.expR-p.exp)+'</div>'+
-  '<div class="kv strong"><span>תזרים חודשי צפוי</span>'+fmt(p.flow,p.flow<0?'neg':'')+'</div><div class="kv"><span>השקעות קבועות</span>'+fmt(p.inv)+'</div>'+
-  '<div class="kv strong"><span>פנוי להשקעה</span>'+fmt(p.free,p.free<0?'neg':'')+'</div><div class="kv"><span>חיסכון שנתי צפוי</span>'+fmt(p.flow*12)+'</div>'}
+function planBox(){const p=planTotals(),t=monthTotals(ym);
+  const row=(l,pl,ac,strong,sig)=>'<div class="kv3'+(strong?' strong':'')+'"><span>'+l+'</span><span>'+(pl==null?'':fmt(pl,sig&&pl<0?'neg':''))+'</span><span>'+(ac==null?'':fmt(ac,sig&&ac<0?'neg':''))+'</span></div>';
+  return '<div class="kv3 hd"><span></span><span>מתוכנן</span><span>בפועל ב'+MON[+ym.slice(5)-1]+'</span></div>'+
+  row('הכנסות',p.inc,t.inc)+row('הוצאות',p.exp,t.exp)+
+  row('רזרבה לבלתי צפוי (בצ״מ) <input id="reserve" type="number" min="0" max="100" inputmode="numeric" value="'+esc(S.reserve)+'" aria-label="אחוז בצ״מ"> %',p.expR-p.exp,null)+
+  row('תזרים חודשי',p.flow,t.flow,1,1)+row('השקעות קבועות',p.inv,t.inv)+row('פנוי להשקעה',p.free,t.free,1,1)+row('חיסכון שנתי צפוי',p.flow*12,null)+
+  (p.inc+p.exp+p.inv===0?'<p class="hint">העמודה "מתוכנן" מתמלאת כשמקלידים סכום חודשי בתיבות שליד הקטגוריות למטה. העמודה "בפועל" מתעדכנת לבד מהתנועות.</p>':'')}
 function catStat(c,act){const pl=num(c.plan);if(!act&&!pl)return '';const inc=c.g==='inc',over=!inc&&pl>0&&act>pl;
   const txt=inc?'התקבל '+fmt(act)+(pl?' מתוך '+fmt(pl):''):'בפועל '+fmt(act)+(pl?(over?' · <span class="over-t">חריגה של '+fmt(act-pl)+'</span>':' · נשארו '+fmt(pl-act)):'');
   return '<small>'+txt+'</small>'+(pl?'<div class="bar'+(over?' over':'')+'"><i style="width:'+Math.min(100,act/pl*100)+'%"></i></div>':'')}
