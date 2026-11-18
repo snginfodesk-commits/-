@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14244A">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
-<title>תקציב הבית</title>
+<title>טבלת מעקב פיננסי</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Rubik:wght@500;700&display=swap">
 <style>
 /* Layout: one phone-width column, month switcher on top, fixed bottom tab bar, add button floating above it. */
@@ -148,10 +148,11 @@ tr.tot td{font-weight:700}
 .mark{width:34px;height:34px;flex:none}
 .auth .logo{width:150px;height:auto;align-self:center;margin-bottom:6px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mark,:root:not([data-theme="light"]) .auth .logo{filter:brightness(0) invert(1)}}
-.top .l .status{max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .l .status{max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .acct{border:1px solid var(--line);background:var(--surface);border-radius:50%;width:36px;height:36px;flex:none;display:grid;place-items:center;padding:0}
 .acct svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .top .l{display:flex;align-items:center;gap:8px;min-width:0}
+@media (max-width:520px){.top{flex-wrap:wrap}.top .l{flex:1 1 100%}.top .l .acct{margin-inline-start:auto}.switch{width:100%;justify-content:space-between}.top .l .status{max-width:none}}
 .auth{max-width:400px;margin:0 auto;padding:48px 16px;display:flex;flex-direction:column;gap:14px}
 .auth h1{font-family:var(--font-num);font-size:28px;margin:0}
 .auth p{margin:0;color:var(--muted)}
@@ -170,7 +171,7 @@ tr.tot td{font-weight:700}
 <body>
 <main class="auth" id="auth" hidden>
   <img class="logo" src="logo.png" alt="צמד ברזל - יזמות ונדל״ן" width="150">
-  <div><h1>תקציב הבית</h1><p id="a-sub">מתכננים, רושמים ועוקבים אחרי ההוצאות וההכנסות של הבית.</p></div>
+  <div><h1>טבלת מעקב פיננסי</h1><p id="a-sub">מתכננים, רושמים ועוקבים אחרי ההוצאות וההכנסות של הבית.</p></div>
   <div class="card"><form id="a-form">
     <label id="a-email-l">אימייל<input id="a-email" type="email" autocomplete="email" required></label>
     <label id="a-pass-l">סיסמה<input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></label>
@@ -182,7 +183,7 @@ tr.tot td{font-weight:700}
 </main>
 <div class="app" id="app" dir="rtl" lang="he" hidden>
   <div class="top">
-    <div class="l"><button class="acct" id="acct" style="order:3" aria-label="החשבון שלי"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-4 4-5.5 7-5.5s6 1.5 7 5.5"/></svg></button><img class="mark" src="logo-mark.png" alt="צמד ברזל" width="34" height="34"><div style="min-width:0"><div class="brand">תקציב הבית</div><div class="status" id="status">טוען…</div></div></div>
+    <div class="l"><button class="acct" id="acct" style="order:3" aria-label="החשבון שלי"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-4 4-5.5 7-5.5s6 1.5 7 5.5"/></svg></button><img class="mark" src="logo-mark.png" alt="צמד ברזל" width="34" height="34"><div style="min-width:0"><div class="brand">טבלת מעקב פיננסי</div><div class="status" id="status">טוען…</div></div></div>
     <div class="switch"><button id="prev" aria-label="הקודם">›</button><b id="period"></b><button id="next" aria-label="הבא">‹</button></div>
   </div>
   <div id="view" style="display:flex;flex-direction:column;gap:14px"></div>
