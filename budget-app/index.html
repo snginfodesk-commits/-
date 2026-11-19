@@ -225,14 +225,16 @@ let chain=Promise.resolve();
 const num=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isFinite(n)?n:0};
 function fmt(v,cls){const n=Math.round(v);return '<span class="n '+(cls||'')+'" dir="ltr">'+(n<0?'−':'')+'₪'+Math.abs(n).toLocaleString('en-US')+'</span>'}
 const catById=id=>S.cats.find(c=>c.id===id);
-/* Fixed monthly items: each keeps a history of amounts [{m:'YYYY-MM',a}], so a change applies from that month on. */
+/* Fixed monthly items: each belongs to one calendar year and counts in every month from its start to December.
+   It keeps a history of amounts [{m:'YYYY-MM',a}], so a change applies from that month on. */
 const nowYm=iso(today).slice(0,7);
 const REC=[['must','הוצאות קבועות','הוצאה קבועה',['שכר דירה','רואה חשבון','ביטוח לאומי','מאמן אישי']],['inv','הוראות קבע להשקעות','הוראת קבע',['קרן השתלמות','קופת גמל להשקעה','חשבון מסחר']]];
 const recs=()=>S.rec||(S.rec=[]);
 const mm=m=>m.slice(5)+'/'+m.slice(0,4);
 const addMonth=(m,k)=>iso(new Date(+m.slice(0,4),+m.slice(5)-1+k,1)).slice(0,7);
-function recPlan(r,m){if(r.end&&m>r.end)return 0;let a=0;for(const e of r.h)if(e.m<=m)a=e.a;return a}
-const recAct=(r,m)=>m>nowYm?0:recPlan(r,m);
+const recYear=r=>r.h[0].m.slice(0,4);
+function recPlan(r,m){if(m.slice(0,4)!==recYear(r)||(r.end&&m>r.end))return 0;let a=0;for(const e of r.h)if(e.m<=m)a=e.a;return a}
+const recAct=recPlan;
 function monthTotals(m){const t={must:0,need:0,want:0,inv:0,inc:0,byCat:{}};
   for(const x of (S.tx[m]||[])){const c=catById(x.c);if(!c)continue;t[c.g]+=x.a;t.byCat[c.id]=(t.byCat[c.id]||0)+x.a}
   for(const r of recs()){const a=recAct(r,m);if(a){t[r.g]+=a;t.byCat['r:'+r.id]=a}}
@@ -339,35 +341,36 @@ function vBudget(){const p=planTotals(),t=monthTotals(ym);let h='<div class="car
     h+='<button class="link" data-newcat="'+g[0]+'">+ קטגוריה חדשה</button></div>'}
   return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">הוצאה שנתית (נופש, ביטוח)? מחלקים ב-12 ומזינים כסכום חודשי. לחיצה על שם קטגוריה מאפשרת לשנות או למחוק אותה. הסכומים "בפועל" מגיעים מהתנועות של החודש שנבחר למעלה.</p>'}
 function vYear(){const T=[];for(let m=1;m<=12;m++)T.push(monthTotals(year+'-'+pad(m)));
-  const mx=Math.max(1,...T.map(t=>Math.max(t.inc,t.exp)));const active=Math.max(1,T.filter(t=>t.inc+t.exp+t.inv>0).length);
+  const mx=Math.max(1,...T.map(t=>Math.max(t.inc,t.exp)));const upto=T.filter((t,i)=>year+'-'+pad(i+1)<=nowYm),B=upto.length?upto:T;const active=Math.max(1,B.filter(t=>t.inc+t.exp+t.inv>0).length);
   let h='<div class="card"><div class="legend"><span><span><i class="dot" style="--c:var(--g-want)"></i> הכנסות</span>&nbsp;&nbsp;<span><i class="dot" style="--c:var(--g-must)"></i> הוצאות</span></span><span>הגבוה ביותר: '+fmt(mx>1?mx:0)+'</span></div>'+
    '<div class="chart" dir="rtl">'+T.map((t,i)=>'<div class="m" title="'+MON[i]+'"><i class="a" style="height:'+(t.inc/mx*100)+'%"></i><i class="b" style="height:'+(t.exp/mx*100)+'%"></i></div>').join('')+'</div>'+
    '<div class="xl">'+MON.map((m,i)=>'<span>'+(i+1)+'</span>').join('')+'</div></div>';
   const rows=[['הכנסות','inc'],['חייבים','must'],['צריכים','need'],['רוצים','want'],['סה״כ הוצאות','exp',1],['תזרים','flow',1],['השקעות','inv'],['פנוי להשקעה','free',1]];
   const cell=(v,sig)=>'<td>'+(v?fmt(v,sig&&v<0?'neg':''):'<span class="n">·</span>')+'</td>';
   h+='<h2>סיכום לפי חודש</h2><div class="card scroll"><table><thead><tr><th>'+year+'</th>'+MON.map((m,i)=>'<th>'+(i+1)+'/'+String(year).slice(2)+'</th>').join('')+'<th>סה״כ</th><th>ממוצע</th></tr></thead><tbody>'+
-   rows.map(r=>{const s=T.reduce((a,t)=>a+t[r[1]],0);return '<tr class="'+(r[2]?'tot':'')+'"><td>'+r[0]+'</td>'+T.map(t=>cell(t[r[1]],r[2])).join('')+cell(s,r[2])+cell(s/active,r[2])+'</tr>'}).join('')+'</tbody></table></div>';
+   rows.map(r=>{const s=T.reduce((a,t)=>a+t[r[1]],0);return '<tr class="'+(r[2]?'tot':'')+'"><td>'+r[0]+'</td>'+T.map(t=>cell(t[r[1]],r[2])).join('')+cell(s,r[2])+cell(B.reduce((a,t)=>a+t[r[1]],0)/active,r[2])+'</tr>'}).join('')+'</tbody></table></div>';
   h+='<h2>לפי קטגוריה: ממוצע חודשי מול התכנון</h2><div class="card scroll"><table><thead><tr><th>קטגוריה</th><th>מתוכנן</th><th>ממוצע</th><th>פער</th><th>סה״כ שנה</th></tr></thead><tbody>';
   let any=false;
   for(const g of G)for(const c of S.cats.filter(c=>c.g===g[0])){const s=T.reduce((a,t)=>a+(t.byCat[c.id]||0),0);const pl=num(c.plan);if(!s&&!pl)continue;any=true;
-    const avg=s/active,gap=g[0]==='inc'?avg-pl:pl-avg;
+    const avg=B.reduce((a,t)=>a+(t.byCat[c.id]||0),0)/active,gap=g[0]==='inc'?avg-pl:pl-avg;
     h+='<tr><td><i class="dot" style="--c:var(--g-'+g[0]+');display:inline-block;margin-left:6px"></i>'+esc(c.name)+'</td>'+cell(pl)+cell(avg)+'<td>'+(pl?fmt(gap,gap<0?'neg':'pos'):'<span class="n">·</span>')+'</td>'+cell(s)+'</tr>'}
-  const pm=year+'-12'<=nowYm?year+'-12':(year+'-01'>nowYm?year+'-01':nowYm);
-  for(const r of recs()){const sr=T.reduce((a,t)=>a+(t.byCat['r:'+r.id]||0),0),pl=recPlan(r,pm);if(!sr&&!pl)continue;any=true;
-    h+='<tr><td><i class="dot" style="--c:var(--g-'+r.g+');display:inline-block;margin-left:6px"></i>'+esc(r.name)+' (קבוע)</td>'+cell(pl)+cell(sr/active)+'<td><span class="n">·</span></td>'+cell(sr)+'</tr>'}
+  for(const r of recs()){const k='r:'+r.id,sr=T.reduce((a,t)=>a+(t.byCat[k]||0),0);if(!sr)continue;any=true;const on=T.filter(t=>t.byCat[k]);
+    h+='<tr><td><i class="dot" style="--c:var(--g-'+r.g+');display:inline-block;margin-left:6px"></i>'+esc(r.name)+' (קבוע)</td>'+cell(on[on.length-1].byCat[k])+cell(sr/on.length)+'<td><span class="n">·</span></td>'+cell(sr)+'</tr>'}
   if(!any)h+='<tr><td colspan="5" style="text-align:center;color:var(--muted);position:static;max-width:none">יופיע כאן אחרי שמגדירים תכנון או מוסיפים תנועות.</td></tr>';
-  return h+'</tbody></table></div><p style="color:var(--muted);font-size:13px;margin:0 2px">הממוצע מחושב לפי '+active+' חודשים עם נתונים. פער ירוק: עומדים בתכנון. אדום: חריגה, או הכנסה נמוכה מהמתוכנן.</p>'}
+  return h+'</tbody></table></div><p style="color:var(--muted);font-size:13px;margin:0 2px">הממוצע מחושב לפי '+active+' חודשים עם נתונים, עד החודש הנוכחי. בשורות "קבוע" מוצג הסכום העדכני. פער ירוק: עומדים בתכנון. אדום: חריגה, או הכנסה נמוכה מהמתוכנן.</p>'}
 function vFixed(){const mn=MON[+ym.slice(5)-1];const tot=g=>recs().reduce((a,r)=>a+(r.g===g?recPlan(r,ym):0),0);
   let h='<div class="card"><div class="kv"><span>הוצאות קבועות ב'+mn+'</span>'+fmt(tot('must'))+'</div><div class="kv"><span>הוראות קבע להשקעות</span>'+fmt(tot('inv'))+'</div><div class="kv strong"><span>סה״כ יורד כל חודש</span>'+fmt(tot('must')+tot('inv'))+'</div></div>';
-  for(const g of REC){const list=recs().filter(r=>r.g===g[0]);
+  const yr=ym.slice(0,4),prevDec=(+yr-1)+'-12',carry=recs().filter(r=>recPlan(r,prevDec)>0);
+  if(!recs().some(r=>recYear(r)===yr)&&carry.length)h+='<div class="card"><b>שנה חדשה, רשימה חדשה</b><p style="margin:6px 0 10px;color:var(--muted)">הקבועות של '+(+yr-1)+' הסתיימו בדצמבר. אפשר להעתיק את '+carry.length+' השורות שהיו פעילות, עם הסכומים האחרונים שלהן, החל מינואר '+yr+'.</p><button class="btn pri" data-act="rec-copy" style="width:100%">העתקה מ-'+(+yr-1)+'</button></div>';
+  for(const g of REC){const list=recs().filter(r=>r.g===g[0]&&recYear(r)===yr);
     h+='<div class="card" style="--c:var(--g-'+g[0]+')"><div class="sec-h"><b><i class="dot"></i>'+g[1]+'</b><span>'+fmt(tot(g[0]))+'</span></div>';
     for(const r of list){const started=r.h[0].m<=ym,ended=!!r.end&&ym>r.end;
       h+='<div class="crow"><div class="cn"><button class="nm" data-rec="'+r.id+'" title="עריכה">'+esc(r.name)+'</button><div class="cs"><small>'+(ended?'הופסק אחרי '+mm(r.end):!started?'מתחיל ב-'+mm(r.h[0].m):'קבוע מאז '+mm(r.h[0].m))+'</small></div></div>'+
         '<input type="number" min="0" inputmode="decimal" placeholder="0" id="ra-'+r.id+'" data-recamt="'+r.id+'" value="'+(recPlan(r,ym)||'')+'"'+(ended||!started?' disabled':'')+' aria-label="סכום חודשי: '+esc(r.name)+'"></div>'}
     if(!list.length)h+='<p style="color:var(--muted);margin:4px 0 8px">עדיין אין כאן כלום. אפשר להתחיל מאחת הדוגמאות:</p><div class="chips" style="flex-wrap:wrap">'+g[3].map(n=>'<button class="chip" data-newrec="'+g[0]+'" data-name="'+esc(n)+'">+ '+esc(n)+'</button>').join('')+'</div>';
     h+='<button class="link" data-newrec="'+g[0]+'">+ '+g[2]+' חדשה</button></div>'}
-  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">מה שמופיע כאן נכנס אוטומטית לכל חודש, בלי להוסיף תנועה. שינוי סכום חל מהחודש שמוצג למעלה ('+mn+' '+ym.slice(0,4)+') והלאה, והחודשים שלפניו נשארים כפי שהיו. לחיצה על השם מאפשרת לשנות שם, להפסיק או למחוק.</p>'}
-function recSheet(r,g,name){const G0=REC.find(x=>x[0]===(r?r.g:g));let opts='';for(let k=-24;k<=6;k++){const m=addMonth(nowYm,k);opts+='<option value="'+m+'"'+(m===ym?' selected':'')+'>'+MON[+m.slice(5)-1]+' '+m.slice(0,4)+'</option>'}
+  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">מה שמופיע כאן נכנס אוטומטית לכל חודש עד דצמבר '+yr+', בלי להוסיף תנועה. בינואר הרשימה מתחילה ריקה, ואפשר להעתיק אותה מהשנה הקודמת. שינוי סכום חל מהחודש שמוצג למעלה ('+mn+') והלאה, והחודשים שלפניו נשארים כפי שהיו. לחיצה על השם מאפשרת לשנות שם, להפסיק או למחוק.</p>'}
+function recSheet(r,g,name){const G0=REC.find(x=>x[0]===(r?r.g:g));let opts='';for(let k=1;k<=12;k++){const m=ym.slice(0,4)+'-'+pad(k);opts+='<option value="'+m+'"'+(m===ym?' selected':'')+'>'+MON[+m.slice(5)-1]+' '+m.slice(0,4)+'</option>'}
   const ended=r&&r.end&&ym>r.end;
   openSheet('<h3>'+(r?'עריכת '+G0[2]:G0[2]+' חדשה')+'</h3><label>שם<input id="r-n" type="text" maxlength="40" value="'+esc(r?r.name:name||'')+'"'+(r||name?'':' data-focus')+'></label>'+
    (r?'':'<div class="two"><label>סכום חודשי (₪)<input id="r-a" type="number" min="0" step="any" inputmode="decimal" placeholder="0"'+(name?' data-focus':'')+'></label><label>החל מחודש<select id="r-m">'+opts+'</select></label></div>')+
@@ -413,6 +416,7 @@ document.addEventListener('click',ev=>{const t=ev.target.closest('button,a');if(
     if(r)r.name=n;else{const a=num($('r-a').value);if(!(a>0))return $('f-err').textContent='צריך להזין סכום חודשי גדול מאפס.';recs().push({id:uid(),g:d.g,name:n,h:[{m:$('r-m').value,a}]})}
     saveMeta();closeSheet();return render()}
   if(d.act==='rec-stop'||d.act==='rec-resume'){const r=recs().find(r=>r.id===d.id);if(r){if(d.act==='rec-stop')r.end=addMonth(ym,-1);else delete r.end;saveMeta()}closeSheet();return render()}
+  if(d.act==='rec-copy'){const yr=ym.slice(0,4),pd=(+yr-1)+'-12';for(const r of recs().filter(r=>recPlan(r,pd)>0))S.rec.push({id:uid(),g:r.g,name:r.name,h:[{m:yr+'-01',a:recPlan(r,pd)}]});saveMeta();return render()}
   if(d.act==='rec-del'){if(d.sure!=='1'){d.sure='1';t.textContent='למחוק? לחיצה נוספת';return}
     S.rec=recs().filter(r=>r.id!==d.id);saveMeta();closeSheet();return render()}
   if(d.newcat)return catSheet(null,d.newcat);
