@@ -227,7 +227,7 @@ tr.tot td{font-weight:700}
   <a href="#home" data-v="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg>בית</a>
   <a href="#tx" data-v="tx"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>תנועות</a>
   <a href="#fixed" data-v="fixed"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 0 1 14-3l2 2M20 15a8 8 0 0 1-14 3l-2-2"/><path d="M20 4v4h-4M4 20v-4h4"/></svg>קבועות</a>
-  <a href="#budget" data-v="budget"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>תקציב</a>
+  <a href="#budget" data-v="budget"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>תכנון חודשי</a>
   <a href="#year" data-v="year"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>שנתי</a>
 </div></nav>
 <div class="veil" id="veil" hidden><div class="sheet" id="sheet" dir="rtl" role="dialog" aria-modal="true"></div></div>
@@ -356,7 +356,7 @@ function txRow(x){const c=catById(x.c);const inc=c&&c.g==='inc';
 function vHome(){const t=monthTotals(ym),p=planTotals();let h='';
   h+='<div class="hero"><div><div class="lbl">תזרים החודש (הכנסות פחות הוצאות)</div><div class="big">'+fmt(t.flow)+'</div></div>'+
      '<div class="row"><div><span class="lbl">הכנסות</span>'+fmt(t.inc)+'</div><div><span class="lbl">הוצאות</span>'+fmt(t.exp)+'</div><div><span class="lbl">פנוי להשקעה</span>'+fmt(t.free)+'</div></div></div>';
-  if(!hasAny())h+='<div class="card"><ol class="steps"><li><span class="k">1</span><span><b>מגדירים תכנון.</b> בלשונית "תקציב" מזינים כמה מתכננים להוציא ולהכניס בכל קטגוריה.</span></li><li><span class="k">2</span><span><b>מוסיפים תנועות.</b> בכפתור "+ תנועה" רושמים כל הוצאה או הכנסה.</span></li><li><span class="k">3</span><span><b>עוקבים.</b> כאן רואים כמה נשאר החודש, וב"שנתי" את כל השנה.</span></li></ol></div>';
+  if(!hasAny())h+='<div class="card"><ol class="steps"><li><span class="k">1</span><span><b>מגדירים תכנון.</b> בלשונית "תכנון חודשי" מזינים כמה מתכננים להוציא ולהכניס בכל קטגוריה.</span></li><li><span class="k">2</span><span><b>מוסיפים תנועות.</b> בכפתור "+ תנועה" רושמים כל הוצאה או הכנסה.</span></li><li><span class="k">3</span><span><b>עוקבים.</b> כאן רואים כמה נשאר החודש, וב"שנתי" את כל השנה.</span></li></ol></div>';
   h+='<h2>הוצאות מול התכנון</h2><div class="card grp">'+['must','need','want','inv'].map(g=>gline(g,t[g],p[g],t.inc)).join('')+'</div>';
   h+='<h2>הכנסות</h2><div class="card grp">'+gline('inc',t.inc,p.inc,0)+'</div>';
   const rec=(S.tx[ym]||[]).slice().sort((a,b)=>b.d.localeCompare(a.d)).slice(0,5);
@@ -419,17 +419,17 @@ function vFixed(){const mn=MON[+ym.slice(5)-1],yr=ym.slice(0,4);const tot=k=>rec
         '<input type="number" min="0" inputmode="decimal" placeholder="0" id="ra-'+r.id+'" data-recamt="'+r.id+'" value="'+(recPlan(r,ym)||'')+'"'+(ended||!started?' disabled':'')+' aria-label="סכום חודשי: '+esc(r.name)+'"></div>'}
     if(!list.length)h+='<p style="color:var(--muted);margin:4px 0 8px">עדיין אין כאן כלום. אפשר להתחיל מאחת הדוגמאות:</p><div class="chips" style="flex-wrap:wrap">'+g[4].map(x=>'<button class="chip" data-newrec="'+g[0]+'" data-name="'+esc(x[0])+'" data-catname="'+esc(x[1])+'">+ '+esc(x[0])+'</button>').join('')+'</div>';
     h+='<button class="link" data-newrec="'+g[0]+'">+ '+g[2]+' חדשה</button></div>'}
-  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">כל שורה משויכת לקטגוריה, והסכום שלה נכנס אוטומטית ל"בפועל" של אותה קטגוריה במסך "תקציב" בכל חודש עד דצמבר '+yr+', בלי להוסיף תנועה. שינוי סכום חל מהחודש שמוצג למעלה ('+mn+') והלאה, והחודשים שלפניו נשארים כפי שהיו. בינואר הרשימה מתחילה ריקה ואפשר להעתיק אותה מהשנה הקודמת.</p>'}
+  return h+'<p style="color:var(--muted);font-size:13px;margin:0 2px">כל שורה משויכת לקטגוריה, והסכום שלה נכנס אוטומטית ל"בפועל" של אותה קטגוריה במסך "תכנון חודשי" בכל חודש עד דצמבר '+yr+', בלי להוסיף תנועה. שינוי סכום חל מהחודש שמוצג למעלה ('+mn+') והלאה, והחודשים שלפניו נשארים כפי שהיו. בינואר הרשימה מתחילה ריקה ואפשר להעתיק אותה מהשנה הקודמת.</p>'}
 function recSheet(r,sec,name,catName){const G0=r?recSec(r):REC.find(x=>x[0]===sec);let opts='';for(let k=1;k<=12;k++){const m=ym.slice(0,4)+'-'+pad(k);opts+='<option value="'+m+'"'+(m===ym?' selected':'')+'>'+MON[+m.slice(5)-1]+' '+m.slice(0,4)+'</option>'}
   const pre=r?r.c:(S.cats.find(c=>c.name===catName&&G0[3].includes(c.g))||{}).id;
   const cats='<option value="">בחירה…</option>'+G0[3].map(g=>'<optgroup label="'+GN[g]+'">'+S.cats.filter(c=>c.g===g).map(c=>'<option value="'+c.id+'"'+(c.id===pre?' selected':'')+'>'+esc(c.name)+'</option>').join('')+'</optgroup>').join('');
   openSheet('<h3>'+(r?'עריכת '+G0[2]:G0[2]+' חדשה')+'</h3><label>שם<input id="r-n" type="text" maxlength="40" value="'+esc(r?r.name:name||'')+'"'+(r||name?'':' data-focus')+'></label>'+
-   '<label>קטגוריה בתקציב<select id="r-c">'+cats+'</select></label>'+
+   '<label>קטגוריה בתכנון החודשי<select id="r-c">'+cats+'</select></label>'+
    (r?'':'<div class="two"><label>סכום חודשי (₪)<input id="r-a" type="number" min="0" step="any" inputmode="decimal" placeholder="0"'+(name?' data-focus':'')+'></label><label>החל מחודש<select id="r-m">'+opts+'</select></label></div>')+
    '<div class="err" id="f-err"></div><div class="btns" style="flex-wrap:wrap">'+
    (r?'<button class="btn del" data-act="rec-del" data-id="'+r.id+'">מחיקה</button>'+(r.end?'<button class="btn" data-act="rec-resume" data-id="'+r.id+'">חידוש</button>':'<button class="btn" data-act="rec-stop" data-id="'+r.id+'">הפסקה מ'+MON[+ym.slice(5)-1]+'</button>'):'')+
    '<button class="btn" data-act="close">ביטול</button><button class="btn pri" data-act="rec-save" data-id="'+(r?r.id:'')+'">שמירה</button></div>'+
-   '<p style="color:var(--muted);font-size:13px;margin:0">הסכום ייספר בקטגוריה שנבחרה, מול התכנון שלה במסך "תקציב". חסרה קטגוריה? מוסיפים אותה במסך "תקציב".'+(r?' "הפסקה" משאירה את החודשים הקודמים, "מחיקה" מסירה מכל החודשים.':'')+'</p>')}
+   '<p style="color:var(--muted);font-size:13px;margin:0">הסכום ייספר בקטגוריה שנבחרה, מול התכנון שלה במסך "תכנון חודשי". חסרה קטגוריה? מוסיפים אותה במסך "תכנון חודשי".'+(r?' "הפסקה" משאירה את החודשים הקודמים, "מחיקה" מסירה מכל החודשים.':'')+'</p>')}
 function render(){
   $('period').textContent=view==='year'?year:MON[+ym.slice(5)-1]+' '+ym.slice(0,4);
   $('view').innerHTML=({home:vHome,tx:vTx,budget:vBudget,year:vYear,fixed:vFixed})[view]();
