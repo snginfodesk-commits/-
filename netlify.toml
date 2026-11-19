@@ -1,0 +1,5 @@
+# The site lives in budget-app/ and has no build step; publish only that folder.
+[build]
+  base = "budget-app"
+  publish = "."
+  command = ""
