@@ -172,6 +172,13 @@ tr.tot td{font-weight:700}
 .auth label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
 .auth input{font-size:16px;color:var(--ink);padding:12px;background:var(--surface);direction:ltr;text-align:left}
 .auth .btn{flex:none;width:100%}
+.auth .pw{position:relative;display:block}
+.auth .pw input{width:100%;padding-right:48px}
+.auth .pw button{position:absolute;top:0;right:0;height:100%;width:46px;border:0;background:none;color:var(--muted);display:grid;place-items:center;border-radius:10px}
+.auth .pw button:hover{color:var(--ink)}
+.auth .pw svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.auth .pw .slash{display:none}
+.auth .pw button[aria-pressed="true"] .slash{display:inline}
 .auth .msg{min-height:1.4em;font-size:14px}
 .auth .msg.ok{color:var(--ink);background:var(--gold-soft);border-radius:10px;padding:10px 12px;font-weight:500} .auth .msg.bad{color:var(--bad)}
 .auth .a-title{margin:0;font-size:18px;font-family:var(--font-num);color:var(--ink);letter-spacing:0}
@@ -200,7 +207,7 @@ tr.tot td{font-weight:700}
       <li><span class="k">3</span><span>אחרי האישור נכנסים עם האימייל והסיסמה, והחשבון מוכן.</span></li>
     </ol>
     <label id="a-email-l">אימייל<input id="a-email" type="email" autocomplete="email" required></label>
-    <label id="a-pass-l">סיסמה<input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></label>
+    <label id="a-pass-l">סיסמה<span class="pw"><input id="a-pass" type="password" autocomplete="current-password" minlength="6" required><button type="button" id="a-eye" aria-label="הצגת הסיסמה" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="M4 4l16 16"/></svg></button></span></label>
     <div class="msg" id="a-msg" role="status"></div>
     <button class="link" id="a-resend" type="button" hidden style="text-align:start;padding:0">לא קיבלתי את המייל. שליחה חוזרת</button>
     <button class="btn pri" id="a-go" type="submit">כניסה</button>
@@ -292,7 +299,8 @@ function showApp(on){$('app').hidden=!on;$('fab').hidden=!on;$('nav').hidden=!on
 const ERR={'Invalid login credentials':'אימייל או סיסמה שגויים.','User already registered':'כבר יש חשבון עם האימייל הזה. אפשר להיכנס או לאפס סיסמה.','Email not confirmed':'צריך לאשר את האימייל קודם. שלחנו אליך קישור אישור.','Password should be at least 6 characters':'הסיסמה צריכה להיות באורך 6 תווים לפחות.'};
 function msg(t,ok){const m=$('a-msg');m.textContent=t||'';m.className='msg '+(t?(ok?'ok':'bad'):'')}
 function showErr(e){if(e&&e.message==='Email not confirmed')$('a-resend').hidden=false;msg(ERR[e&&e.message]||(e&&/rate limit/i.test(e.message)?'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.':'משהו השתבש. נסו שוב.'))}
-function setAuth(mode){authMode=mode;msg('');$('a-resend').hidden=true;
+function showPw(on){$('a-pass').type=on?'text':'password';$('a-eye').setAttribute('aria-pressed',on);$('a-eye').setAttribute('aria-label',on?'הסתרת הסיסמה':'הצגת הסיסמה')}
+function setAuth(mode){authMode=mode;msg('');showPw(false);$('a-resend').hidden=true;
   $('a-email-l').hidden=mode==='newpass';$('a-email').required=mode!=='newpass';
   $('a-pass-l').hidden=mode==='forgot';$('a-pass').required=mode!=='forgot';
   $('a-pass').autocomplete=mode==='login'?'current-password':'new-password';
@@ -329,6 +337,7 @@ function boot(){
   $('a-resend').addEventListener('click',async()=>{const email=$('a-email').value.trim();if(!email)return msg('צריך למלא קודם את כתובת האימייל.');$('a-resend').disabled=true;
     try{const r=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:back}});if(r.error)showErr(r.error);else msg('שלחנו שוב מייל אישור לכתובת '+email+'. בדקו גם בתיקיית הספאם.',1)}catch(e){showErr(e)}
     $('a-resend').disabled=false});
+  $('a-eye').addEventListener('click',()=>showPw($('a-pass').type==='password'));
   $('a-toggle').addEventListener('click',()=>setAuth('login'));
   $('a-new').addEventListener('click',()=>{setAuth('signup');window.scrollTo(0,0);$('a-email').focus()});
   $('a-forgot').addEventListener('click',()=>setAuth('forgot'));
