@@ -191,7 +191,7 @@ tr.tot td{font-weight:700}
 <main class="auth" id="auth" hidden>
   <img class="logo" src="logo.png" alt="צמד ברזל - יזמות ונדל״ן" width="150">
   <h1>טבלת מעקב פיננסי</h1>
-  <div class="card a-new" id="a-new-wrap"><b>עדיין אין לך חשבון?</b><button class="btn big" id="a-new" type="button">ליצירת חשבון לחץ כאן</button><small>ההרשמה חינם ולוקחת דקה. אחרי ההרשמה נשלח אליך מייל עם קישור לאישור.</small></div>
+  <div class="card a-new" id="a-new-wrap"><b>עדיין אין לך חשבון?</b><button class="btn big" id="a-new" type="button">ליצירת חשבון לחץ כאן</button><small id="a-new-note">ההרשמה חינם ולוקחת דקה. אחרי ההרשמה נשלח אליך מייל עם קישור לאישור.</small></div>
   <div class="card"><form id="a-form">
     <h2 class="a-title" id="a-title">כניסה לחשבון</h2>
     <ol class="steps a-info" id="a-info" hidden>
@@ -279,7 +279,7 @@ const hasAny=()=>Object.values(S.tx).some(a=>a.length)||S.cats.some(c=>num(c.pla
 /* ---------- storage: Supabase (one private set of rows per signed-in user); without config, demo mode in this browser ---------- */
 const CFG=window.BUDGET_CONFIG||{};
 const configured=/^https:\/\/[^.]+\.supabase\.co\/?$/.test(CFG.supabaseUrl||'')&&String(CFG.supabaseAnonKey||'').length>30&&!!window.supabase;
-let sb=null,userId=null,userEmail='',authMode='login';
+let sb=null,userId=null,userEmail='',authMode='login',noConfirm=false;
 function readLocal(){try{const j=JSON.parse(localStorage.getItem(LS));if(j&&Array.isArray(j.cats))return j}catch(e){}return null}
 function writeLocal(){if(sb)return;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
 function setStatus(t){$('status').textContent=t}
@@ -297,7 +297,7 @@ function setAuth(mode){authMode=mode;msg('');$('a-resend').hidden=true;
   $('a-pass-l').hidden=mode==='forgot';$('a-pass').required=mode!=='forgot';
   $('a-pass').autocomplete=mode==='login'?'current-password':'new-password';
   $('a-pass-l').firstChild.textContent=mode==='newpass'?'סיסמה חדשה':'סיסמה';
-  $('a-title').textContent={login:'כניסה לחשבון',signup:'יצירת חשבון חדש',forgot:'איפוס סיסמה',newpass:'בחירת סיסמה חדשה'}[mode];$('a-info').hidden=mode!=='signup';$('a-new-wrap').hidden=mode!=='login';
+  $('a-title').textContent={login:'כניסה לחשבון',signup:'יצירת חשבון חדש',forgot:'איפוס סיסמה',newpass:'בחירת סיסמה חדשה'}[mode];$('a-info').hidden=mode!=='signup'||noConfirm;$('a-new-wrap').hidden=mode!=='login';
   $('a-go').textContent={login:'כניסה',signup:'יצירת חשבון',forgot:'שליחת קישור לאיפוס',newpass:'שמירת הסיסמה'}[mode];
   $('a-toggle').hidden=mode==='login'||mode==='newpass';
   $('a-forgot').hidden=mode!=='login';$('a-google-wrap').hidden=!(CFG.googleLogin&&(mode==='login'||mode==='signup'))}
@@ -315,6 +315,8 @@ function boot(){
   if(!configured){const local=readLocal();if(local){S=local;if(migrate())writeLocal()}setStatus('מצב הדגמה: הנתונים נשמרים במכשיר הזה בלבד');return showApp(true)}
   sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
   const back=location.origin+location.pathname;
+  /* If the project lets people in without confirming their email, don't promise a confirmation email. */
+  fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/auth/v1/settings',{headers:{apikey:CFG.supabaseAnonKey}}).then(r=>r.json()).then(j=>{if(j&&j.mailer_autoconfirm){noConfirm=true;$('a-new-note').textContent='ההרשמה חינם ולוקחת דקה.';$('a-info').hidden=true}}).catch(()=>{});
   sb.auth.onAuthStateChange((evt,session)=>{setTimeout(()=>{if(evt==='PASSWORD_RECOVERY'){setAuth('newpass');return showApp(false)}if(authMode!=='newpass'||!session)loadUser(session)},0)});
   $('a-form').addEventListener('submit',async ev=>{ev.preventDefault();const email=$('a-email').value.trim(),pw=$('a-pass').value;$('a-go').disabled=true;msg('');
     try{let r;
