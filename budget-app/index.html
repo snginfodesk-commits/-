@@ -147,14 +147,14 @@ tr.tot td{font-weight:700}
 .err{color:var(--bad);font-size:13px;min-height:1em}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
 .mark{width:34px;height:34px;flex:none}
-.auth .logo{width:150px;height:auto;align-self:center;margin-bottom:6px}
+.auth .logo{width:112px;height:auto;align-self:center;margin-bottom:6px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mark,:root:not([data-theme="light"]) .auth .logo{filter:brightness(0) invert(1)}}
 .top .l .status{max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .acct{border:1px solid var(--line);background:var(--surface);border-radius:50%;width:36px;height:36px;flex:none;display:grid;place-items:center;padding:0}
 .acct svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .top .l{display:flex;align-items:center;gap:8px;min-width:0}
 @media (max-width:520px){.top{flex-wrap:wrap}.top .l{flex:1 1 100%}.top .l .acct{margin-inline-start:auto}.switch{width:100%;justify-content:space-between}.top .l .status{max-width:none}}
-.auth{max-width:400px;margin:0 auto;padding:48px 16px;display:flex;flex-direction:column;gap:14px}
+.auth{max-width:400px;margin:0 auto;padding:24px 16px 40px;display:flex;flex-direction:column;gap:14px}
 .auth h1{font-family:var(--font-num);font-size:28px;margin:0}
 .auth p{margin:0;color:var(--muted)}
 .auth form{display:flex;flex-direction:column;gap:12px}
@@ -162,7 +162,14 @@ tr.tot td{font-weight:700}
 .auth input{font-size:16px;color:var(--ink);padding:12px;background:var(--surface);direction:ltr;text-align:left}
 .auth .btn{flex:none;width:100%}
 .auth .msg{min-height:1.4em;font-size:14px}
-.auth .msg.ok{color:var(--good)} .auth .msg.bad{color:var(--bad)}
+.auth .msg.ok{color:var(--ink);background:var(--gold-soft);border-radius:10px;padding:10px 12px;font-weight:500} .auth .msg.bad{color:var(--bad)}
+.auth .a-title{margin:0;font-size:18px;font-family:var(--font-num);color:var(--ink);letter-spacing:0}
+.auth .a-info{font-size:14px;color:var(--ink);background:var(--bg);border-radius:12px;padding:12px}
+.auth .a-new{display:flex;flex-direction:column;gap:10px;text-align:center;border:2px solid var(--gold)}
+.auth .a-new b{font-size:17px}
+.auth .a-new small{color:var(--muted);font-size:13px}
+.auth .btn.big{background:var(--gold);border-color:var(--gold);color:#fff;font-size:19px;font-weight:700;padding:16px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .auth .btn.big{color:#1B1404}}
 .auth .links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
 .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -173,14 +180,21 @@ tr.tot td{font-weight:700}
 <main class="auth" id="auth" hidden>
   <img class="logo" src="logo.png" alt="צמד ברזל - יזמות ונדל״ן" width="150">
   <div><h1>טבלת מעקב פיננסי</h1><p id="a-sub">מתכננים, רושמים ועוקבים אחרי ההוצאות וההכנסות של הבית.</p></div>
+  <div class="card a-new" id="a-new-wrap"><b>עדיין אין לך חשבון?</b><button class="btn big" id="a-new" type="button">ליצירת חשבון לחץ כאן</button><small>ההרשמה חינם ולוקחת דקה. אחרי ההרשמה נשלח אליך מייל עם קישור לאישור.</small></div>
   <div class="card"><form id="a-form">
+    <h2 class="a-title" id="a-title">כניסה לחשבון</h2>
+    <ol class="steps a-info" id="a-info" hidden>
+      <li><span class="k">1</span><span>ממלאים כאן אימייל וסיסמה (6 תווים לפחות) ולוחצים "יצירת חשבון".</span></li>
+      <li><span class="k">2</span><span><b>נשלח אליך מייל עם קישור לאישור.</b> פותחים את המייל ולוחצים על הקישור. אם הוא לא מגיע תוך כמה דקות, בודקים בתיקיית הספאם.</span></li>
+      <li><span class="k">3</span><span>אחרי האישור נכנסים עם האימייל והסיסמה, והחשבון מוכן.</span></li>
+    </ol>
     <label id="a-email-l">אימייל<input id="a-email" type="email" autocomplete="email" required></label>
     <label id="a-pass-l">סיסמה<input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></label>
     <div class="msg" id="a-msg" role="status"></div>
     <button class="btn pri" id="a-go" type="submit">כניסה</button>
     <div id="a-google-wrap" hidden><div class="or">או</div><button class="btn" id="a-google" type="button" style="margin-top:12px">כניסה עם Google</button></div>
   </form></div>
-  <div class="links"><button class="link" id="a-toggle" type="button">אין לך חשבון? הרשמה</button><button class="link" id="a-forgot" type="button">שכחתי סיסמה</button></div>
+  <div class="links"><button class="link" id="a-toggle" type="button" hidden>יש לי כבר חשבון. כניסה</button><button class="link" id="a-forgot" type="button">שכחתי סיסמה</button></div>
 </main>
 <div class="app" id="app" dir="rtl" lang="he" hidden>
   <div class="top">
@@ -271,8 +285,9 @@ function setAuth(mode){authMode=mode;msg('');
   $('a-pass-l').hidden=mode==='forgot';$('a-pass').required=mode!=='forgot';
   $('a-pass').autocomplete=mode==='login'?'current-password':'new-password';
   $('a-pass-l').firstChild.textContent=mode==='newpass'?'סיסמה חדשה':'סיסמה';
-  $('a-go').textContent={login:'כניסה',signup:'הרשמה',forgot:'שליחת קישור לאיפוס',newpass:'שמירת הסיסמה'}[mode];
-  $('a-toggle').textContent=mode==='login'?'אין לך חשבון? הרשמה':'יש לי חשבון. כניסה';$('a-toggle').hidden=mode==='newpass';
+  $('a-title').textContent={login:'כניסה לחשבון',signup:'יצירת חשבון חדש',forgot:'איפוס סיסמה',newpass:'בחירת סיסמה חדשה'}[mode];$('a-info').hidden=mode!=='signup';$('a-new-wrap').hidden=mode!=='login';
+  $('a-go').textContent={login:'כניסה',signup:'יצירת חשבון',forgot:'שליחת קישור לאיפוס',newpass:'שמירת הסיסמה'}[mode];
+  $('a-toggle').hidden=mode==='login'||mode==='newpass';
   $('a-forgot').hidden=mode!=='login';$('a-google-wrap').hidden=!(CFG.googleLogin&&(mode==='login'||mode==='signup'))}
 async function loadUser(session){
   if(!session){userId=null;userEmail='';S=fresh();setAuth('login');return showApp(false)}
@@ -292,12 +307,13 @@ function boot(){
   $('a-form').addEventListener('submit',async ev=>{ev.preventDefault();const email=$('a-email').value.trim(),pw=$('a-pass').value;$('a-go').disabled=true;msg('');
     try{let r;
       if(authMode==='login')r=await sb.auth.signInWithPassword({email,password:pw});
-      else if(authMode==='signup'){r=await sb.auth.signUp({email,password:pw,options:{emailRedirectTo:back}});if(!r.error&&!r.data.session)msg('שלחנו אליך מייל אישור. לוחצים על הקישור שבו ואז נכנסים.',1)}
+      else if(authMode==='signup'){r=await sb.auth.signUp({email,password:pw,options:{emailRedirectTo:back}});if(!r.error&&!r.data.session){setAuth('login');msg('כמעט סיימנו. שלחנו מייל לכתובת '+email+' עם קישור לאישור. פותחים את המייל ולוחצים על הקישור, ואז נכנסים כאן עם האימייל והסיסמה. לא הגיע תוך כמה דקות? בדקו בתיקיית הספאם.',1)}}
       else if(authMode==='forgot'){r=await sb.auth.resetPasswordForEmail(email,{redirectTo:back});if(!r.error)msg('שלחנו אליך קישור לאיפוס הסיסמה.',1)}
       else{r=await sb.auth.updateUser({password:pw});if(!r.error){authMode='login';const s=await sb.auth.getSession();loadUser(s.data.session)}}
       if(r.error)showErr(r.error)}catch(e){showErr(e)}
     $('a-go').disabled=false});
-  $('a-toggle').addEventListener('click',()=>setAuth(authMode==='login'?'signup':'login'));
+  $('a-toggle').addEventListener('click',()=>setAuth('login'));
+  $('a-new').addEventListener('click',()=>{setAuth('signup');window.scrollTo(0,0);$('a-email').focus()});
   $('a-forgot').addEventListener('click',()=>setAuth('forgot'));
   $('a-google').addEventListener('click',()=>sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:back}}));
 }
